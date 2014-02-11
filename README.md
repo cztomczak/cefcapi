@@ -7,7 +7,7 @@ the example.html file. Shows how to implement dummy reference
 counting, how to initialize CEF structures with callbacks to 
 implement CEF handlers like cef_app_t and cef_client_t.
 
-Currently works only on Linux. 
+There is only available example for Linux as of now.
 
 Tested and works fine with CEF 3 branch 1750 revision 1604.
 
