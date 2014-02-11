@@ -1,5 +1,5 @@
-cefcapi
-=======
+cefcapi - CEF C API
+===================
 A simple example on how to use the C API in [Chromium Embedded
 Framework](https://code.google.com/p/chromiumembedded/).
 Example creates a window, embeds a browser and displays local
