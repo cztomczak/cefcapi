@@ -6,6 +6,10 @@
 
 #include "include/capi/cef_base_capi.h"
 
+// Forward declarations.
+void initialize_cef_callbacks(void* ptr, const void* methods[]);
+void initialize_cef_base(struct _cef_base_t* base);
+
 // Set to 1 to check if add_ref() and release()
 // are called and to track the total number of calls.
 // add_ref will be printed as "+", release as "-".
@@ -71,28 +75,24 @@ int CEF_CALLBACK get_refct(struct _cef_base_t* self) {
     return 1;
 }
 
-void initialize_cef_base(void* ptr) {
+void initialize_cef_base(struct _cef_base_t* base) {
     printf("initialize_cef_base\n");
     // Check if "size" member was set.
-    size_t size = *(size_t*)ptr;
-    // Let's debug the size in case sizeof was used
-    // on a pointer instead of a structure.
+    size_t size = base->size;
+    // Let's print the size in case sizeof was used
+    // on a pointer instead of a structure. In such
+    // case the number will be very high.
     printf("cef_base_t.size = %lu\n", size);
-    static struct _cef_base_t cef_base_tmp;
-    if (sizeof(size) != sizeof(cef_base_tmp.size)) {
-        printf("FATAL: _cef_base_t.size has invalid type\n");
-        _exit(1);
-    }
     if (size <= 0) {
         printf("FATAL: initialize_cef_base failed, size member not set\n");
         _exit(1);
     }
-    ptr += sizeof(cef_base_tmp.size);
-    const void* methods[] = {
+    void* ptr = (void*)base + sizeof(size_t);
+    const void* callbacks[] = {
         &add_ref,
         &release,
         &get_refct,
         NULL
     };
-    initialize_cef_callbacks(ptr, methods);
+    initialize_cef_callbacks(ptr, callbacks);
 }

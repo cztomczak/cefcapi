@@ -7,6 +7,9 @@
 #include "cef_base.h"
 #include "include/capi/cef_app_capi.h"
 
+// Forward declarations.
+void initialize_app_handler(struct _cef_app_t* app);
+
 // ----------------------------------------------------------------------------
 // struct _cef_app_t
 // ----------------------------------------------------------------------------
@@ -80,9 +83,9 @@ struct CEF_CALLBACK _cef_render_process_handler_t* get_render_process_handler(
 void initialize_app_handler(struct _cef_app_t* app) {
     printf("initialize_app_handler\n");
     app->base.size = sizeof(struct _cef_app_t);
-    initialize_cef_base(app);
+    initialize_cef_base((struct _cef_base_t*)app);
     // callbacks
-    const void* methods[] = {
+    const void* callbacks[] = {
         &on_before_command_line_processing,
         &on_register_custom_schemes,
         &get_resource_bundle_handler,
@@ -91,5 +94,5 @@ void initialize_app_handler(struct _cef_app_t* app) {
         NULL
     };
     void* ptr = (void*)app + sizeof(struct _cef_base_t);
-    initialize_cef_callbacks(ptr, methods);
+    initialize_cef_callbacks(ptr, callbacks);
 }

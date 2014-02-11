@@ -7,6 +7,9 @@
 #include "cef_base.h"
 #include "include/capi/cef_client_capi.h"
 
+// Forward declarations.
+void initialize_client_handler(struct _cef_client_t* client);
+
 // ----------------------------------------------------------------------------
 // struct _cef_client_t
 // ----------------------------------------------------------------------------
@@ -154,9 +157,9 @@ int CEF_CALLBACK on_process_message_received(
 void initialize_client_handler(struct _cef_client_t* client) {
     DEBUG_CALLBACK("initialize_client_handler\n");
     client->base.size = sizeof(struct _cef_client_t);
-    initialize_cef_base(client);
+    initialize_cef_base((struct _cef_base_t*)client);
     // callbacks
-    const void* methods[] = {
+    const void* callbacks[] = {
         &get_context_menu_handler,
         &get_dialog_handler,
         &get_display_handler,
@@ -174,5 +177,5 @@ void initialize_client_handler(struct _cef_client_t* client) {
         NULL
     };
     void* ptr = (void*)client + sizeof(struct _cef_base_t);
-    initialize_cef_callbacks(ptr, methods);
+    initialize_cef_callbacks(ptr, callbacks);
 }
