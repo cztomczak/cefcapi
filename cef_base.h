@@ -22,14 +22,13 @@
 // ----------------------------------------------------------------------------
 
 void initialize_cef_callbacks(void* ptr, const void* methods[]) {
+    printf("initialize_cef_callbacks, ");
     int i;
-    printf("initialize_cef_callbacks: ");
     for (i = 0; methods[i] != NULL; i++) {
-        printf("%d ", i);
         memcpy(ptr, &methods[i], sizeof(void*));
         ptr += sizeof(void*);
     }
-    printf("\n");
+    printf("%d callbacks\n", i);
 }
 
 // ----------------------------------------------------------------------------

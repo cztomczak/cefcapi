@@ -11,6 +11,12 @@
 #include "cef_client.h"
 #include "gtk.h"
 
+// Some comments:
+// 1. Structures are declared using "struct _cef_app_t app",
+//    but there is another shorter way: "cef_app_t app". Though
+//    the second way "cef_app_t" is not visible to Sublime Text
+//    editor and clicking F12 "Go to definition" doesn't work.
+
 int main(int argc, char** argv) {
     // Main args.
     struct _cef_main_args_t mainArgs = {};
