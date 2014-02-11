@@ -52,16 +52,16 @@ int main(int argc, char** argv) {
     char appPath[1024] = {};
     ssize_t ppLen = readlink("/proc/self/exe", appPath,
             sizeof(appPath)-1);
-    if (ppLen != -1) {
+    if (ppLen != -1 && ppLen > 0) {
         appPath[ppLen] = '\0';
-    }
-    do {
-        ppLen -= 1;
-        appPath[ppLen+1] = '\0';
-    } while (appPath[ppLen] != '/' && ppLen > 0);
-    // No slash at the end.
-    if (ppLen > 0 && appPath[ppLen] == '/') {
-        appPath[ppLen] = '\0';
+        do {
+            ppLen -= 1;
+            appPath[ppLen+1] = '\0';
+        } while (appPath[ppLen] != '/' && ppLen > 0);
+        // No slash at the end.
+        if (ppLen > 0 && appPath[ppLen] == '/') {
+            appPath[ppLen] = '\0';
+        }
     }
     printf("Executable's directory: %s\n", appPath);
     
