@@ -6,10 +6,6 @@
 
 #include "include/capi/cef_base_capi.h"
 
-// Forward declarations.
-void initialize_cef_callbacks(void* ptr, const void* methods[]);
-void initialize_cef_base(struct _cef_base_t* base);
-
 // Set to 1 to check if add_ref() and release()
 // are called and to track the total number of calls.
 // add_ref will be printed as "+", release as "-".

@@ -7,9 +7,6 @@
 #include "cef_base.h"
 #include "include/capi/cef_app_capi.h"
 
-// Forward declarations.
-void initialize_app_handler(struct _cef_app_t* app);
-
 // ----------------------------------------------------------------------------
 // struct _cef_app_t
 // ----------------------------------------------------------------------------

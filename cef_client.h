@@ -7,9 +7,6 @@
 #include "cef_base.h"
 #include "include/capi/cef_client_capi.h"
 
-// Forward declarations.
-void initialize_client_handler(struct _cef_client_t* client);
-
 // ----------------------------------------------------------------------------
 // struct _cef_client_t
 // ----------------------------------------------------------------------------
