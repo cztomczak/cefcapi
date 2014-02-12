@@ -8,7 +8,7 @@
 #include "include/capi/cef_app_capi.h"
 
 // ----------------------------------------------------------------------------
-// struct _cef_app_t
+// cef_app_t
 // ----------------------------------------------------------------------------
 
 ///
@@ -77,10 +77,10 @@ struct CEF_CALLBACK _cef_render_process_handler_t* get_render_process_handler(
     return NULL;
 }
 
-void initialize_app_handler(struct _cef_app_t* app) {
+void initialize_app_handler(cef_app_t* app) {
     printf("initialize_app_handler\n");
-    app->base.size = sizeof(struct _cef_app_t);
-    initialize_cef_base((struct _cef_base_t*)app);
+    app->base.size = sizeof(cef_app_t);
+    initialize_cef_base((cef_base_t*)app);
     // callbacks
     app->on_before_command_line_processing = on_before_command_line_processing;
     app->on_register_custom_schemes = on_register_custom_schemes;

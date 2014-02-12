@@ -11,23 +11,17 @@
 #include "cef_client.h"
 #include "gtk.h"
 
-// Some comments:
-// 1. Structures are declared using "struct _cef_app_t app",
-//    but there is another shorter way: "cef_app_t app". Though
-//    the second way "cef_app_t" is not visible to Sublime Text
-//    editor and clicking F12 "Go to definition" doesn't work.
-
 int main(int argc, char** argv) {
     // Main args.
-    struct _cef_main_args_t mainArgs = {};
+    cef_main_args_t mainArgs = {};
     mainArgs.argc = argc;
     mainArgs.argv = argv;
     
     // Application handler and its callbacks.
-    // _cef_app_t structure must be filled. It must implement
+    // cef_app_t structure must be filled. It must implement
     // reference counting. You cannot pass a structure 
     // initialized with zeroes.
-    struct _cef_app_t app = {};
+    cef_app_t app = {};
     initialize_app_handler(&app);
     
     // Execute subprocesses.
@@ -39,8 +33,8 @@ int main(int argc, char** argv) {
     
     // Application settings.
     // It is mandatory to set the "size" member.
-    struct _cef_settings_t settings = {};
-    settings.size = sizeof(struct _cef_settings_t);
+    cef_settings_t settings = {};
+    settings.size = sizeof(cef_settings_t);
     settings.no_sandbox = 1;
 
     // Initialize CEF.
@@ -51,7 +45,7 @@ int main(int argc, char** argv) {
     // to CEF and then it will create a window of its own.
     initialize_gtk();
     GtkWidget* hwnd = create_gtk_window("cefcapi example", 1024, 768);
-    struct _cef_window_info_t windowInfo = {};
+    cef_window_info_t windowInfo = {};
     windowInfo.parent_widget = hwnd;
 
     // Executable's directory
@@ -80,14 +74,14 @@ int main(int argc, char** argv) {
     
     // Browser settings.
     // It is mandatory to set the "size" member.
-    struct _cef_browser_settings_t browserSettings = {};
-    browserSettings.size = sizeof(struct _cef_browser_settings_t);
+    cef_browser_settings_t browserSettings = {};
+    browserSettings.size = sizeof(cef_browser_settings_t);
     
     // Client handler and its callbacks.
-    // _cef_client_t structure must be filled. It must implement
+    // cef_client_t structure must be filled. It must implement
     // reference counting. You cannot pass a structure 
     // initialized with zeroes.
-    struct _cef_client_t client = {};
+    cef_client_t client = {};
     initialize_client_handler(&client);
 
     // Create browser.

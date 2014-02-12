@@ -151,10 +151,10 @@ int CEF_CALLBACK on_process_message_received(
     return 0;
 }
 
-void initialize_client_handler(struct _cef_client_t* client) {
+void initialize_client_handler(cef_client_t* client) {
     DEBUG_CALLBACK("initialize_client_handler\n");
-    client->base.size = sizeof(struct _cef_client_t);
-    initialize_cef_base((struct _cef_base_t*)client);
+    client->base.size = sizeof(cef_client_t);
+    initialize_cef_base((cef_base_t*)client);
     // callbacks
     client->get_context_menu_handler = get_context_menu_handler;
     client->get_dialog_handler = get_dialog_handler;

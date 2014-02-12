@@ -27,7 +27,7 @@
 ///
 // Increment the reference count.
 ///
-int CEF_CALLBACK add_ref(struct _cef_base_t* self) {
+int CEF_CALLBACK add_ref(cef_base_t* self) {
     DEBUG_CALLBACK("cef_base_t.add_ref\n");
     if (DEBUG_REFERENCE_COUNTING)
         printf("+");
@@ -38,7 +38,7 @@ int CEF_CALLBACK add_ref(struct _cef_base_t* self) {
 // Decrement the reference count.  Delete this object when no references
 // remain.
 ///
-int CEF_CALLBACK release(struct _cef_base_t* self) {
+int CEF_CALLBACK release(cef_base_t* self) {
     DEBUG_CALLBACK("cef_base_t.release\n");
     if (DEBUG_REFERENCE_COUNTING)
         printf("-");
@@ -48,14 +48,14 @@ int CEF_CALLBACK release(struct _cef_base_t* self) {
 ///
 // Returns the current number of references.
 ///
-int CEF_CALLBACK get_refct(struct _cef_base_t* self) {
+int CEF_CALLBACK get_refct(cef_base_t* self) {
     DEBUG_CALLBACK("cef_base_t.get_refct\n");
     if (DEBUG_REFERENCE_COUNTING)
         printf("=");
     return 1;
 }
 
-void initialize_cef_base(struct _cef_base_t* base) {
+void initialize_cef_base(cef_base_t* base) {
     printf("initialize_cef_base\n");
     // Check if "size" member was set.
     size_t size = base->size;
