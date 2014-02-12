@@ -16,22 +16,6 @@
 #define DEBUG_CALLBACK(x) { static int first_call = 1; if (first_call == 1) { first_call = 0; printf(x); } }
 
 // ----------------------------------------------------------------------------
-// Initialize CEF_CALLBACK methods on a CEF structure.
-// May be a structure like _cef_base_t or a handler 
-// with callbacks.
-// ----------------------------------------------------------------------------
-
-void initialize_cef_callbacks(void* ptr, const void* methods[]) {
-    printf("initialize_cef_callbacks, ");
-    int i;
-    for (i = 0; methods[i] != NULL; i++) {
-        memcpy(ptr, &methods[i], sizeof(void*));
-        ptr += sizeof(void*);
-    }
-    printf("%d callbacks\n", i);
-}
-
-// ----------------------------------------------------------------------------
 // cef_base_t
 // ----------------------------------------------------------------------------
 
@@ -83,12 +67,7 @@ void initialize_cef_base(struct _cef_base_t* base) {
         printf("FATAL: initialize_cef_base failed, size member not set\n");
         _exit(1);
     }
-    void* ptr = (void*)base + sizeof(size_t);
-    const void* callbacks[] = {
-        &add_ref,
-        &release,
-        &get_refct,
-        NULL
-    };
-    initialize_cef_callbacks(ptr, callbacks);
+    base->add_ref = add_ref;
+    base->release = release;
+    base->get_refct = get_refct;
 }

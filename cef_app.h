@@ -82,14 +82,9 @@ void initialize_app_handler(struct _cef_app_t* app) {
     app->base.size = sizeof(struct _cef_app_t);
     initialize_cef_base((struct _cef_base_t*)app);
     // callbacks
-    const void* callbacks[] = {
-        &on_before_command_line_processing,
-        &on_register_custom_schemes,
-        &get_resource_bundle_handler,
-        &get_browser_process_handler,
-        &get_render_process_handler,
-        NULL
-    };
-    void* ptr = (void*)app + sizeof(struct _cef_base_t);
-    initialize_cef_callbacks(ptr, callbacks);
+    app->on_before_command_line_processing = on_before_command_line_processing;
+    app->on_register_custom_schemes = on_register_custom_schemes;
+    app->get_resource_bundle_handler = get_resource_bundle_handler;
+    app->get_browser_process_handler = get_browser_process_handler;
+    app->get_render_process_handler = get_render_process_handler;
 }
