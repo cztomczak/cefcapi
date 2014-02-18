@@ -5,11 +5,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "cef_base.h"
 #include "cef_app.h"
 #include "cef_client.h"
 #include "winapi.h"
+
+// TODO: call cef_quit_message_loop() when window is closed,
+//       otherwise app is still hanging. You can do it in
+//       OnBeforeClose() callback or implement WndProc::WM_CLOSE
+//       by creating window on your own.
 
 int main(int argc, char** argv) {
     // Main args.
@@ -44,12 +50,25 @@ int main(int argc, char** argv) {
     // to CEF and then it will create a window of its own.
     //initialize_gtk();
     //GtkWidget* hwnd = create_gtk_window("cefcapi example", 1024, 768);
-    cef_window_info_t windowInfo = {};
+    //cef_window_info_t windowInfo = {};
     //windowInfo.parent_widget = hwnd;
 
+    cef_window_info_t windowInfo = {};
+    windowInfo.style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN \
+            | WS_CLIPSIBLINGS | WS_VISIBLE;
+    windowInfo.parent_window = NULL;
+    windowInfo.x = CW_USEDEFAULT;
+    windowInfo.y = CW_USEDEFAULT;
+    windowInfo.width = CW_USEDEFAULT;
+    windowInfo.height = CW_USEDEFAULT;
+
     // Initial url.
-    char url[1024] = "example.html";
-    //snprintf(url, sizeof(url), "file://%s/example.html", appPath);
+    char cwd[1024] = "";
+    if (getcwd(cwd, sizeof(cwd)) == '\0') {
+        printf("ERROR: getcwd() failed\n");
+    }
+    char url[1024];
+    snprintf(url, sizeof(url), "file://%s/example.html", cwd);
     // There is no _cef_string_t type.
     cef_string_t cefUrl = {};
     cef_string_utf8_to_utf16(url, strlen(url), &cefUrl);

@@ -7,7 +7,7 @@ the example.html file. Shows how to implement dummy reference
 counting, how to initialize CEF structures with callbacks to 
 implement CEF handlers like cef_app_t and cef_client_t.
 
-There is only available example for Linux as of now.
+Examples available for both Linux and Windows.
 
 Tested and works fine with CEF 3 branch 1750 revision 1604.
 
@@ -20,3 +20,21 @@ Getting started
 ---------------
 1. Copy binaries to the Release/ directory.
 2. Run "make" command.
+
+
+GCC compiler on Windows
+-----------------------
+It was required to modify cef_export.h to make it work with GCC
+compiler on Windows. The calling convention needs to be __stdcall:
+
+```
+#elif defined(COMPILER_GCC)
+
+#define CEF_EXPORT __attribute__ ((visibility("default")))
+
+#ifdef OS_WIN
+#define CEF_CALLBACK __stdcall
+#else
+#define CEF_CALLBACK
+#endif
+```

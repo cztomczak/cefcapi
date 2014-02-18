@@ -2,7 +2,7 @@
     @del "%~dp0Release\cefcapi.exe"
 )
 
-gcc -I. -L./Release main_windows.c -o Release/cefcapi.exe -lcef
+gcc -Wall -Werror -I. -L./Release main_windows.c -o Release/cefcapi.exe -lcef
 cd Release/
 call "cefcapi.exe"
 cd ../
