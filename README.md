@@ -20,7 +20,7 @@ for each handler.
 Getting started
 ---------------
 1. Copy binaries to the Release/ directory.
-2. Run "make" command.
+2. Run the "make" command on Linux. On Windows use the build.bat script.
 
 
 GCC compiler on Windows
