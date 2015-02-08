@@ -1,5 +1,6 @@
 #!/bin/env python
 
+import os
 import sys
 from pycparser import parse_file, c_generator, c_ast
 
@@ -142,10 +143,17 @@ class FuncDeclVisitor(c_ast.NodeVisitor):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        sys.exit(1)
+    genfname = sys.argv[1] if len(sys.argv) >= 2 else 'gen.c'
 
-    ast = parse_file(sys.argv[1], use_cpp=True, cpp_args=[r'-Ifake', r'-I.'])
+    # generate simple C file including all relevant headers.
+    with open(genfname, 'w') as fh:
+        fh.write('#define __attribute__(x) \n')
+        for subdir, dirs, files in os.walk('include/capi'):
+            for incf in [f for f in files if f[-2:] == '.h']:
+                fh.write('#include "' + os.path.join(subdir, incf) + '"\n')
+        fh.write('\nint main(int argc, char** argv)\n{\n\treturn 0;\n}')
+
+    ast = parse_file(genfname, use_cpp=True, cpp_args=[r'-Ifake', r'-I.'])
 
 #    ast.show()
     StructVisitor().visit(ast)
