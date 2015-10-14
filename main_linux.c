@@ -6,7 +6,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "cef_base.h"
+#include <gdk/gdkx.h>
+
 #include "cef_app.h"
 #include "cef_client.h"
 #include "gtk.h"
@@ -46,7 +47,8 @@ int main(int argc, char** argv) {
     initialize_gtk();
     GtkWidget* hwnd = create_gtk_window("cefcapi example", 1024, 768);
     cef_window_info_t windowInfo = {};
-    windowInfo.parent_widget = hwnd;
+    windowInfo.parent_window = gdk_x11_drawable_get_xid(gtk_widget_get_window(hwnd));
+    // windowInfo.parent_window = hwnd;
 
     // Executable's directory
     char appPath[1024] = {};

@@ -27,11 +27,10 @@
 ///
 // Increment the reference count.
 ///
-int CEF_CALLBACK add_ref(cef_base_t* self) {
+void CEF_CALLBACK add_ref(cef_base_t* self) {
     DEBUG_CALLBACK("cef_base_t.add_ref\n");
     if (DEBUG_REFERENCE_COUNTING)
         printf("+");
-    return 1;
 }
 
 ///
@@ -48,7 +47,7 @@ int CEF_CALLBACK release(cef_base_t* self) {
 ///
 // Returns the current number of references.
 ///
-int CEF_CALLBACK get_refct(cef_base_t* self) {
+int CEF_CALLBACK has_one_ref(cef_base_t* self) {
     DEBUG_CALLBACK("cef_base_t.get_refct\n");
     if (DEBUG_REFERENCE_COUNTING)
         printf("=");
@@ -65,9 +64,9 @@ void initialize_cef_base(cef_base_t* base) {
     printf("cef_base_t.size = %lu\n", (unsigned long)size);
     if (size <= 0) {
         printf("FATAL: initialize_cef_base failed, size member not set\n");
-        _exit(1);
+        exit(1);
     }
     base->add_ref = add_ref;
     base->release = release;
-    base->get_refct = get_refct;
+    base->has_one_ref = has_one_ref;
 }
