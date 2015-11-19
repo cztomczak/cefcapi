@@ -12,6 +12,8 @@ Examples available for both Linux and Windows.
 Tested and works fine with CEF 3 branch 1750 revision 1629
 (Chrome stable 33.0.1750.117).
 
+There is [Pull Request #3](https://github.com/cztomczak/cefcapi/pull/3) that makes code work with a newer CEF branch 2454.
+
 TODO: create python script that will generate callbacks for all
 handlers, and a corresponding initialize_struct_name() functions
 for each handler.
