@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2015 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -38,11 +38,11 @@
 #define CEF_INCLUDE_CAPI_CEF_REQUEST_CAPI_H_
 #pragma once
 
+#include "include/capi/cef_base_capi.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "include/capi/cef_base_capi.h"
 
 struct _cef_post_data_element_t;
 struct _cef_post_data_t;
@@ -146,8 +146,8 @@ typedef struct _cef_request_t {
       const cef_string_t* url);
 
   ///
-  // Get the resource type for this request. Accurate resource type information
-  // may only be available in the browser process.
+  // Get the resource type for this request. Only available in the browser
+  // process.
   ///
   cef_resource_type_t (CEF_CALLBACK *get_resource_type)(
       struct _cef_request_t* self);
@@ -159,6 +159,13 @@ typedef struct _cef_request_t {
   ///
   cef_transition_type_t (CEF_CALLBACK *get_transition_type)(
       struct _cef_request_t* self);
+
+  ///
+  // Returns the globally unique identifier for this request or 0 if not
+  // specified. Can be used by cef_request_tHandler implementations in the
+  // browser process to track a single request across multiple callbacks.
+  ///
+  uint64 (CEF_CALLBACK *get_identifier)(struct _cef_request_t* self);
 } cef_request_t;
 
 

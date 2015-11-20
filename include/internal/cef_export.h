@@ -32,7 +32,7 @@
 #define CEF_INCLUDE_INTERNAL_CEF_EXPORT_H_
 #pragma once
 
-#include "include/internal/cef_build.h"
+#include "include/base/cef_build.h"
 
 #if defined(COMPILER_MSVC)
 
@@ -48,12 +48,7 @@
 #elif defined(COMPILER_GCC)
 
 #define CEF_EXPORT __attribute__ ((visibility("default")))
-
-#ifdef OS_WIN
-#define CEF_CALLBACK __stdcall
-#else
 #define CEF_CALLBACK
-#endif
 
 #endif  // COMPILER_GCC
 

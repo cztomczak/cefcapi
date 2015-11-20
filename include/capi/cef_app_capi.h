@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2015 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -38,16 +38,16 @@
 #define CEF_INCLUDE_CAPI_CEF_APP_CAPI_H_
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "include/capi/cef_base_capi.h"
 #include "include/capi/cef_browser_process_handler_capi.h"
 #include "include/capi/cef_command_line_capi.h"
 #include "include/capi/cef_render_process_handler_capi.h"
 #include "include/capi/cef_resource_bundle_handler_capi.h"
 #include "include/capi/cef_scheme_capi.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 struct _cef_app_t;
 
@@ -174,6 +174,13 @@ CEF_EXPORT void cef_quit_message_loop();
 // modal message loop. Set to false (0) after exiting the modal message loop.
 ///
 CEF_EXPORT void cef_set_osmodal_loop(int osModalLoop);
+
+///
+// Call during process startup to enable High-DPI support on Windows 7 or newer.
+// Older versions of Windows should be left DPI-unaware because they do not
+// support DirectWrite and GDI fonts are kerned very badly.
+///
+CEF_EXPORT void cef_enable_highdpi_support();
 
 #ifdef __cplusplus
 }
