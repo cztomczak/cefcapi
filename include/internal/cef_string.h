@@ -77,8 +77,7 @@ typedef cef_string_userfree_utf8_t cef_string_userfree_t;
 #elif defined(CEF_STRING_TYPE_UTF16)
 typedef char16 cef_char_t;
 typedef cef_string_userfree_utf16_t cef_string_userfree_t;
-// typedef cef_string_utf16_t cef_string_t;
-#define cef_string_t cef_string_utf16_t
+typedef cef_string_utf16_t cef_string_t;
 #define cef_string_set cef_string_utf16_set
 #define cef_string_copy cef_string_utf16_copy
 #define cef_string_clear cef_string_utf16_clear

@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -38,16 +38,16 @@
 #define CEF_INCLUDE_CAPI_CEF_RESOURCE_HANDLER_CAPI_H_
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "include/capi/cef_base_capi.h"
 #include "include/capi/cef_browser_capi.h"
 #include "include/capi/cef_callback_capi.h"
 #include "include/capi/cef_cookie_capi.h"
 #include "include/capi/cef_request_capi.h"
 #include "include/capi/cef_response_capi.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 ///
@@ -58,7 +58,7 @@ typedef struct _cef_resource_handler_t {
   ///
   // Base structure.
   ///
-  cef_base_t base;
+  cef_base_ref_counted_t base;
 
   ///
   // Begin processing the request. To handle the request return true (1) and
@@ -78,7 +78,8 @@ typedef struct _cef_resource_handler_t {
   // (0) or the specified number of bytes have been read. Use the |response|
   // object to set the mime type, http status code and other optional header
   // values. To redirect the request to a new URL set |redirectUrl| to the new
-  // URL.
+  // URL. If an error occured while setting up the request you can call
+  // set_error() on |response| to indicate the error condition.
   ///
   void (CEF_CALLBACK *get_response_headers)(
       struct _cef_resource_handler_t* self, struct _cef_response_t* response,

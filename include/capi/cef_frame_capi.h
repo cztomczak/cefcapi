@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -38,15 +38,15 @@
 #define CEF_INCLUDE_CAPI_CEF_FRAME_CAPI_H_
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "include/capi/cef_base_capi.h"
 #include "include/capi/cef_dom_capi.h"
 #include "include/capi/cef_request_capi.h"
 #include "include/capi/cef_stream_capi.h"
 #include "include/capi/cef_string_visitor_capi.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 struct _cef_browser_t;
 struct _cef_v8context_t;
@@ -61,7 +61,7 @@ typedef struct _cef_frame_t {
   ///
   // Base structure.
   ///
-  cef_base_t base;
+  cef_base_ref_counted_t base;
 
   ///
   // True if this object is currently attached to a valid frame.
@@ -176,7 +176,8 @@ typedef struct _cef_frame_t {
   cef_string_userfree_t (CEF_CALLBACK *get_name)(struct _cef_frame_t* self);
 
   ///
-  // Returns the globally unique identifier for this frame.
+  // Returns the globally unique identifier for this frame or < 0 if the
+  // underlying frame does not yet exist.
   ///
   int64 (CEF_CALLBACK *get_identifier)(struct _cef_frame_t* self);
 
