@@ -1,7 +1,3 @@
-// Copyright (c) 2014 The cefcapi authors. All rights reserved.
-// License: BSD 3-clause.
-// Project website: https://github.com/cztomczak/cefcapi
-
 #pragma once
 
 #include "cef_base.h"
