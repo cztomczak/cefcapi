@@ -5,7 +5,11 @@
 #pragma once
 
 #include "cef_base.h"
+#include "cef_life_span_handler.h"
 #include "include/capi/cef_client_capi.h"
+
+extern cef_life_span_handler_t g_life_span_handler;
+
 
 // ----------------------------------------------------------------------------
 // struct cef_client_t
@@ -108,7 +112,8 @@ struct _cef_keyboard_handler_t* CEF_CALLBACK get_keyboard_handler(
 struct _cef_life_span_handler_t* CEF_CALLBACK get_life_span_handler(
         struct _cef_client_t* self) {
     DEBUG_CALLBACK("get_life_span_handler\n");
-    return NULL;
+    // Implemented!
+    return &g_life_span_handler;
 }
 
 ///
@@ -165,7 +170,7 @@ void initialize_cef_client(cef_client_t* client) {
     client->get_geolocation_handler = get_geolocation_handler;
     client->get_jsdialog_handler = get_jsdialog_handler;
     client->get_keyboard_handler = get_keyboard_handler;
-    client->get_life_span_handler = get_life_span_handler;
+    client->get_life_span_handler = get_life_span_handler;  // Implemented!
     client->get_load_handler = get_load_handler;
     client->get_render_handler = get_render_handler;
     client->get_request_handler = get_request_handler;

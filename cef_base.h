@@ -63,7 +63,7 @@ int CEF_CALLBACK has_one_ref(cef_base_ref_counted_t* self) {
 }
 
 void initialize_cef_base_ref_counted(cef_base_ref_counted_t* base) {
-    printf("initialize_cef_base_ref_countede\n");
+    printf("initialize_cef_base_ref_counted\n");
     // Check if "size" member was set.
     size_t size = base->size;
     // Let's print the size in case sizeof was used

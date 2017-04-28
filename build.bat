@@ -2,10 +2,10 @@
     @del "%~dp0Release\cefcapi.exe"
 )
 
-gcc -Wall -Werror -I. -L./Release main_windows.c -o Release/cefcapi.exe -lcef
-cd Release/
-call "cefcapi.exe"
-cd ../
-
-:end
+@call gcc --version
+@call gcc -Wall -Werror -I. -L./Release main_win.c -o Release/cefcapi.exe -lcef
 @echo exit code = %ERRORLEVEL%
+@cd Release/
+call "cefcapi.exe"
+@echo exit code = %ERRORLEVEL%
+@cd ../
