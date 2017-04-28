@@ -14,7 +14,12 @@
 #include "capi/cef_base.h"
 #include "capi/cef_app.h"
 #include "capi/cef_client.h"
+#include "capi/cef_life_span_handler.h"
 
+// Globals
+cef_life_span_handler_t g_life_span_handler = {};  // not used currently
+
+// Signatures
 int x11_error_handler(Display *display, XErrorEvent *event);
 int x11_io_error_handler(Display *display);
 
@@ -75,9 +80,8 @@ int main(int argc, char** argv) {
     // to CEF and then it will create a window of its own.
     // When passing NULL you have to implement cef_life_span_handler_t
     // and call cef_quit_message_loop from the on_before_close
-    // callback. Implementation of cef_life_span_handler_t and
-    // its on_before_close callback is available in the Windows
-    // example: "main_win.c".
+    // callback. Example initialization of this handler and its
+    // callback is Windows example.
     initialize_gtk();
     GtkWidget* gtk_window = create_gtk_window("cefcapi example", 800, 600);
     cef_window_info_t window_info = {};

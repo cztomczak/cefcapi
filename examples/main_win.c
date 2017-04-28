@@ -14,6 +14,7 @@
 
 #include "include/cef_version_win.h"
 
+// Globals
 cef_life_span_handler_t g_life_span_handler = {};
 
 
