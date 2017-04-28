@@ -10,7 +10,6 @@
 #include "cef_base.h"
 #include "cef_app.h"
 #include "cef_client.h"
-#include "winapi.h"
 #include "include/cef_version_win.h"
 #include "cef_life_span_handler.h"
 
@@ -21,11 +20,12 @@ int main(int argc, char** argv) {
     // This executable is called many times, because it
     // is also used for subprocesses. Let's print args
     // so we can differentiate between main process and
-    // subprocesses. In the args if for example there
-    // is "--type=renderer" switch then it means that
-    // this is Renderer process. There may be more
+    // subprocesses. If one of the first args is for
+    // example "--type=renderer" then it means that
+    // this is a Renderer process. There may be more
     // subprocesses like GPU (--type=gpu-process) and
-    // on Linux zygote process.
+    // others. On Linux there are also special Zygote
+    // processes.
     printf("\nProcess args: ");
     if (argc == 1) {
         printf("none (Main process)");
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
         printf("CEF version: %s\n", CEF_VERSION);
     }
 
-    // Main args.
+    // Main args
     cef_main_args_t main_args = {};
     main_args.instance = GetModuleHandle(NULL);
 
@@ -66,6 +66,7 @@ int main(int argc, char** argv) {
     // "size" member.
     cef_settings_t settings = {};
     settings.size = sizeof(cef_settings_t);
+    settings.log_severity = LOGSEVERITY_WARNING; // Show only warnings/errors
     settings.no_sandbox = 1;
 
     // Initialize CEF
