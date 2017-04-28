@@ -1,28 +1,32 @@
 cefcapi - CEF C API
 ===================
+
 A simple example on how to use the C API in [Chromium Embedded
-Framework](https://code.google.com/p/chromiumembedded/).
-Example creates a window, embeds a browser and displays local
-html file. Shows how to implement dummy reference
+Framework](https://bitbucket.org/chromiumembedded/cef).
+Example creates a window, embeds a browser in it and loads
+Google website. Shows how to implement dummy reference
 counting and CEF structures with callbacks to 
 implement CEF handlers like cef_app_t and cef_client_t.
 
-Examples available for both Linux and Windows.
 
-Tested and works fine with CEF 3 branch 1750 revision 1629
-(Chrome stable 33.0.1750.117).
+Compatibility
+-------------
 
-There is [Pull Request #3](https://github.com/cztomczak/cefcapi/pull/3) that makes code work with a newer CEF branch 2454.
+Examples are available for both Linux and Windows.
 
-TODO: create python script that will generate callbacks for all
-handlers, and a corresponding initialize_struct_name() functions
-for each handler.
+Tested with CEF branch 3029:
+- Linux: `cef_binary_3.3029.1608.g27a32db_linux64.tar.bz2`
+- Windows: example not yet updated for branch 3029
 
 
 Getting started
 ---------------
-1. Copy binaries to the Release/ directory.
-2. Run the "make" command on Linux. On Windows use the build.bat script.
+1. Download "Standard Distribution" binaries from Spotify:
+    http://opensource.spotify.com/cefbuilds/index.html
+2. Copy cef_binary*/Release/* to cefcapi/Release/
+3. Copy cef_binary*/Resources/* to cefcapi/Release/
+4. On Linux run the "make" command
+5. On Windows run the "build.bat" script
 
 
 GCC compiler on Windows

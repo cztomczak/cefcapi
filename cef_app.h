@@ -1,6 +1,6 @@
 // Copyright (c) 2014 The cefcapi authors. All rights reserved.
 // License: BSD 3-clause.
-// Website: https://github.com/CzarekTomczak/cefcapi
+// Project website: https://github.com/cztomczak/cefcapi
 
 #pragma once
 
@@ -77,10 +77,10 @@ struct _cef_render_process_handler_t*
     return NULL;
 }
 
-void initialize_app_handler(cef_app_t* app) {
-    printf("initialize_app_handler\n");
+void initialize_cef_app(cef_app_t* app) {
+    printf("initialize_cef_app\n");
     app->base.size = sizeof(cef_app_t);
-    initialize_cef_base((cef_base_t*)app);
+    initialize_cef_base_ref_counted((cef_base_ref_counted_t*)app);
     // callbacks
     app->on_before_command_line_processing = on_before_command_line_processing;
     app->on_register_custom_schemes = on_register_custom_schemes;

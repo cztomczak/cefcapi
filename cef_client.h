@@ -1,6 +1,6 @@
 // Copyright (c) 2014 The cefcapi authors. All rights reserved.
 // License: BSD 3-clause.
-// Website: https://github.com/CzarekTomczak/cefcapi
+// Project website: https://github.com/cztomczak/cefcapi
 
 #pragma once
 
@@ -8,7 +8,7 @@
 #include "include/capi/cef_client_capi.h"
 
 // ----------------------------------------------------------------------------
-// struct _cef_client_t
+// struct cef_client_t
 // ----------------------------------------------------------------------------
 
 ///
@@ -16,8 +16,8 @@
 ///
 
 ///
-// Return the handler for context menus. If no handler is provided the default
-// implementation will be used.
+// Return the handler for context menus. If no handler is
+// provided the default implementation will be used.
 ///
 
 struct _cef_context_menu_handler_t* CEF_CALLBACK get_context_menu_handler(
@@ -151,10 +151,10 @@ int CEF_CALLBACK on_process_message_received(
     return 0;
 }
 
-void initialize_client_handler(cef_client_t* client) {
+void initialize_cef_client(cef_client_t* client) {
     DEBUG_CALLBACK("initialize_client_handler\n");
     client->base.size = sizeof(cef_client_t);
-    initialize_cef_base((cef_base_t*)client);
+    initialize_cef_base_ref_counted((cef_base_ref_counted_t*)client);
     // callbacks
     client->get_context_menu_handler = get_context_menu_handler;
     client->get_dialog_handler = get_dialog_handler;

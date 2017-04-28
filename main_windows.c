@@ -1,6 +1,6 @@
 // Copyright (c) 2014 The cefcapi authors. All rights reserved.
 // License: BSD 3-clause.
-// Website: https://github.com/CzarekTomczak/cefcapi
+// Project website: https://github.com/cztomczak/cefcapi
 
 #include <stdio.h>
 #include <string.h>
@@ -63,16 +63,10 @@ int main(int argc, char** argv) {
     windowInfo.height = CW_USEDEFAULT;
 
     // Initial url.
-    char cwd[1024] = "";
-    if (getcwd(cwd, sizeof(cwd)) == '\0') {
-        printf("ERROR: getcwd() failed\n");
-    }
-    char url[1024];
-    snprintf(url, sizeof(url), "file://%s/example.html", cwd);
-    // There is no _cef_string_t type.
+    char url[] = "https://www.google.com/ncr";
     cef_string_t cefUrl = {};
     cef_string_utf8_to_utf16(url, strlen(url), &cefUrl);
-    
+
     // Browser settings.
     // It is mandatory to set the "size" member.
     cef_browser_settings_t browserSettings = {};
@@ -88,7 +82,7 @@ int main(int argc, char** argv) {
     // Create browser.
     printf("cef_browser_host_create_browser\n");
     cef_browser_host_create_browser(&windowInfo, &client, &cefUrl,
-            &browserSettings, NULL);
+                                    &browserSettings, NULL);
 
     // Message loop.
     printf("cef_run_message_loop\n");

@@ -1,101 +1,103 @@
 // Copyright (c) 2014 The cefcapi authors. All rights reserved.
 // License: BSD 3-clause.
-// Website: https://github.com/CzarekTomczak/cefcapi
+// Project website: https://github.com/cztomczak/cefcapi
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
+#include <X11/Xlib.h>
+#include <gdk/gdkx.h>
+
+#include "gtk.h"
 #include "cef_base.h"
 #include "cef_app.h"
 #include "cef_client.h"
-#include "gtk.h"
+
+int x11_error_handler(Display *display, XErrorEvent *event);
+int x11_io_error_handler(Display *display);
+
 
 int main(int argc, char** argv) {
     // Main args.
-    cef_main_args_t mainArgs = {};
-    mainArgs.argc = argc;
-    mainArgs.argv = argv;
+    cef_main_args_t main_args = {};
+    main_args.argc = argc;
+    main_args.argv = argv;
     
-    // Application handler and its callbacks.
-    // cef_app_t structure must be filled. It must implement
-    // reference counting. You cannot pass a structure 
-    // initialized with zeroes.
     cef_app_t app = {};
-    initialize_app_handler(&app);
+    initialize_cef_app(&app);
     
     // Execute subprocesses.
     printf("cef_execute_process, argc=%d\n", argc);
-    int code = cef_execute_process(&mainArgs, &app, NULL);
+    int code = cef_execute_process(&main_args, &app, NULL);
     if (code >= 0) {
         _exit(code);
     }
     
-    // Application settings.
-    // It is mandatory to set the "size" member.
+    // Application settings. It is mandatory to set the
+    // "size" member.
     cef_settings_t settings = {};
     settings.size = sizeof(cef_settings_t);
+    settings.log_severity = LOGSEVERITY_WARNING; // Show only warnings & errors
     settings.no_sandbox = 1;
 
     // Initialize CEF.
     printf("cef_initialize\n");
-    cef_initialize(&mainArgs, &settings, &app, NULL);
+    cef_initialize(&main_args, &settings, &app, NULL);
 
-    // Create GTK window. You can pass a NULL handle 
+    // Create GTK window. Alternatively you can pass a NULL handle
     // to CEF and then it will create a window of its own.
+    // When passing NULL you have to implement cef_life_span_handler_t
+    // and call cef_quit_message_loop() from the on_before_close()
+    // callback.
     initialize_gtk();
-    GtkWidget* hwnd = create_gtk_window("cefcapi example", 1024, 768);
-    cef_window_info_t windowInfo = {};
-    windowInfo.parent_widget = hwnd;
+    GtkWidget* gtk_window = create_gtk_window("cefcapi example", 800, 600);
+    cef_window_info_t window_info = {};
+    Window xid = gdk_x11_drawable_get_xid(gtk_widget_get_window(gtk_window));
+    window_info.parent_window = xid;
 
-    // Executable's directory
-    char appPath[1024] = {};
-    ssize_t ppLen = readlink("/proc/self/exe", appPath,
-            sizeof(appPath)-1);
-    if (ppLen != -1 && ppLen > 0) {
-        appPath[ppLen] = '\0';
-        do {
-            ppLen -= 1;
-            appPath[ppLen+1] = '\0';
-        } while (appPath[ppLen] != '/' && ppLen > 0);
-        // No slash at the end.
-        if (ppLen > 0 && appPath[ppLen] == '/') {
-            appPath[ppLen] = '\0';
-        }
-    }
-    printf("Executable's directory: %s\n", appPath);
+    // Copied from upstream cefclient. Install xlib error
+    // handlers so that the application won't be terminated on
+    // non-fatal errors. Must be done after initializing GTK.
+    XSetErrorHandler(x11_error_handler);
+    XSetIOErrorHandler(x11_io_error_handler);
+
+    // Initial url
+    char url[] = "https://www.google.com/ncr";
+    cef_string_t cef_url = {};
+    cef_string_utf8_to_utf16(url, strlen(url), &cef_url);
     
-    // Initial url.
-    char url[1024];
-    snprintf(url, sizeof(url), "file://%s/example.html", appPath);
-    // There is no _cef_string_t type.
-    cef_string_t cefUrl = {};
-    cef_string_utf8_to_utf16(url, strlen(url), &cefUrl);
+    // Browser settings. It is mandatory to set the
+    // "size" member.
+    cef_browser_settings_t browser_settings = {};
+    browser_settings.size = sizeof(cef_browser_settings_t);
     
-    // Browser settings.
-    // It is mandatory to set the "size" member.
-    cef_browser_settings_t browserSettings = {};
-    browserSettings.size = sizeof(cef_browser_settings_t);
-    
-    // Client handler and its callbacks.
-    // cef_client_t structure must be filled. It must implement
-    // reference counting. You cannot pass a structure 
-    // initialized with zeroes.
+    // Client handler and its callbacks
     cef_client_t client = {};
-    initialize_client_handler(&client);
+    initialize_cef_client(&client);
 
-    // Create browser.
+    // Create browser
     printf("cef_browser_host_create_browser\n");
-    cef_browser_host_create_browser(&windowInfo, &client, &cefUrl,
-            &browserSettings, NULL);
+    cef_browser_host_create_browser(&window_info, &client, &cef_url,
+                                    &browser_settings, NULL);
 
-    // Message loop.
+    // Message loop
     printf("cef_run_message_loop\n");
     cef_run_message_loop();
 
-    // Shutdown CEF.
+    // Shutdown CEF
     printf("cef_shutdown\n");
     cef_shutdown();
 
+    return 0;
+}
+
+int x11_error_handler(Display *display, XErrorEvent *event) {
+    printf("X11 error: type=%d, serial=%lu, code=%d\n",
+           event->type, event->serial, (int)event->error_code);
+    return 0;
+}
+
+int x11_io_error_handler(Display *display) {
     return 0;
 }
