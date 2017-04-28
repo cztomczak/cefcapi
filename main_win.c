@@ -7,11 +7,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "cef_base.h"
-#include "cef_app.h"
-#include "cef_client.h"
+#include "cefcapi/cef_base.h"
+#include "cefcapi/cef_app.h"
+#include "cefcapi/cef_client.h"
+#include "cefcapi/cef_life_span_handler.h"
+
 #include "include/cef_version_win.h"
-#include "cef_life_span_handler.h"
 
 cef_life_span_handler_t g_life_span_handler = {};
 
