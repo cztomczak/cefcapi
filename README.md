@@ -77,3 +77,12 @@ index 2813253b..e78be029 100644
  
  #endif  // COMPILER_GCC
 ```
+
+## Support development
+
+If you would like to support general cefcapi development efforts
+by making a donation please click the Paypal Donate button:
+
+<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7LU7PD4N4GGG'>
+<img src='https://raw.githubusercontent.com/wiki/cztomczak/cefpython/images/donate.gif' />
+</a><br><br>
