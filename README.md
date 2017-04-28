@@ -12,6 +12,7 @@ Table of contents:
 * [Examples](#examples)
 * [Compatibility](#compatibility)
 * [Getting started](#getting-started)
+* [Updating CEF version](#updating-cef-version)
 * [Patch for gcc compiler on Windows](#patch-for-gcc-compiler-on-windows)
 * [Support development](#support-development)
 
@@ -25,25 +26,13 @@ Table of contents:
 
 ## Compatibility
 
-Examples are available for both Linux and Windows.
-
-Tested with CEF branch 3029:
-- Windows: `cef_binary_3.3029.1608.g27a32db_windows32.tar.bz2`
-- Linux: `cef_binary_3.3029.1608.g27a32db_linux64.tar.bz2`
-
-If you download a CEF version newer than `3.3029.1608` then
-apart from copying binaries to cefcapi/Release/ directory
-you will also have to update the include/ directory with CEF
-header files.
-
-In the include/ directory you can find two files: "cef_version_win.h"
-and "cef_version_linux.h" - these header files were copied
-from CEF binary distributions and their original file names
-were "cef_version.h".
-
-Tested only with gcc compiler:
-- Windows: mingw-gcc 5.3.0 and TDM-gcc 5.1.0 on Windows 7 64-bit
-- Linux: gcc 4.8.2 on Ubuntu 14.04 64-bit
+Tested configurations:
+- Windows:
+    - Binary: `cef_binary_3.3029.1608.g27a32db_windows32.tar.bz2`
+    - Compilers: mingw-gcc 5.3.0 and TDM-gcc 5.1.0 on Windows 7 64-bit
+- Linux:
+    - Binary: `cef_binary_3.3029.1608.g27a32db_linux64.tar.bz2`
+    - Compiler: Linux: gcc 4.8.2 on Ubuntu 14.04 64-bit
 
 
 ## Getting started
@@ -56,16 +45,29 @@ Tested only with gcc compiler:
 3. Copy cef_binary*/Release/* to cefcapi/Release/
 4. Copy cef_binary*/Resources/* to cefcapi/Release/
 5. On Linux run the "make" command
-6. On Windows if using GCC compiler apply the patch - see
-   the next section "Patch for gcc compiler on Windows"
-7. On Windows run the "build.bat" script
+6. On Windows run the "build.bat" script
+
+
+## Updating CEF version
+
+If you download a CEF version newer than `3.3029.1608` then
+apart from copying binaries to cefcapi/Release/ directory
+you will also have to update the include/ directory with CEF
+header files.
+
+Additionally on Windows if using gcc compiler then apply the
+[Patch for gcc compiler on Windows](#patch-for-gcc-compiler-on-windows).
+In the include/ directory you can find two files: "cef_version_win.h"
+and "cef_version_linux.h" - these header files were copied
+from CEF binary distributions for appropriate platforms and
+their original file names were "cef_version.h".
 
 
 ## Patch for gcc compiler on Windows
 
 It was required to modify [cef_export.h](include/internal/cef_export.h)
 to make it work with GCC compiler on Windows. The calling
-convention needs to be __stdcall.
+convention for callbacks needs to be __stdcall.
 
 Related issues:
 - Issue [#6](../../issues/6)
