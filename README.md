@@ -1,4 +1,4 @@
-# CEF C API project
+# CEF C API (cefcapi)
 
 A simple example on how to use the C API in [Chromium Embedded
 Framework](https://bitbucket.org/chromiumembedded/cef)
@@ -19,8 +19,8 @@ Table of contents:
 
 ## Examples
 
-- Windows: see [main_win.c](main_win.c)
-- Linux: see [main_linux.c](main_linux.c)
+- Windows: see [main_win.c](examples/main_win.c)
+- Linux: see [main_linux.c](examples/main_linux.c)
 - Mac: not available yet
 
 
@@ -44,8 +44,8 @@ Tested configurations:
 2. Create cefcapi/Release/ directory
 3. Copy cef_binary*/Release/* to cefcapi/Release/
 4. Copy cef_binary*/Resources/* to cefcapi/Release/
-5. On Linux run the "make" command
-6. On Windows run the "build.bat" script
+5. On Linux run the "make" command in the root directory
+6. On Windows run the "build.bat" script in the root directory
 
 
 ## Updating CEF version
