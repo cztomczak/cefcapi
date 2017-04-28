@@ -1,3 +1,6 @@
+// CEF C API example
+// Project website: https://github.com/cztomczak/cefcapi
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

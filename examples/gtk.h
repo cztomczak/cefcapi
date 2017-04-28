@@ -1,3 +1,6 @@
+// CEF C API example
+// Project website: https://github.com/cztomczak/cefcapi
+
 #pragma once
 
 #include "include/capi/cef_app_capi.h"

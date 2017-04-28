@@ -1,3 +1,6 @@
+// CEF C API example
+// Project website: https://github.com/cztomczak/cefcapi
+
 #pragma once
 
 #include <unistd.h>
