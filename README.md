@@ -55,12 +55,13 @@ apart from copying binaries to cefcapi/Release/ directory
 you will also have to update the include/ directory with CEF
 header files.
 
-Additionally on Windows if using gcc compiler then apply the
-[Patch for gcc compiler on Windows](#patch-for-gcc-compiler-on-windows).
 In the include/ directory you can find two files: "cef_version_win.h"
 and "cef_version_linux.h" - these header files were copied
 from CEF binary distributions for appropriate platforms and
 their original file names were "cef_version.h".
+
+Additionally on Windows if using gcc compiler then apply the
+[Patch for gcc compiler on Windows](#patch-for-gcc-compiler-on-windows).
 
 
 ## Patch for gcc compiler on Windows
