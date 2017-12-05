@@ -32,7 +32,7 @@ Tested configurations:
     - Compilers: mingw-gcc 5.3.0 and TDM-gcc 5.1.0 on Windows 7 64-bit
 - Linux:
     - Binary: `cef_binary_3.3202.1692.g18a939d_linux64.tar.bz2`
-    - Compiler: Linux: gcc 4.8.2 on Ubuntu 14.04 64-bit
+    - Compiler: gcc 6.3.0 on Debian 9.2 (stretch) 64-bit
 
 
 ## Getting started
@@ -44,7 +44,8 @@ Tested configurations:
 2. Create cefcapi/Release/ directory
 3. Copy cef_binary*/Release/* to cefcapi/Release/
 4. Copy cef_binary*/Resources/* to cefcapi/Release/
-5. On Linux run the "make" command in the root directory
+5. On Linux run "make gtk2" (GTK+ 2 example) or "make gtk3" (GTK+ 3 example) in the root directory.
+   Note that you may need to build CEF with "use_gtk3=true" to link it with GTK+ 3.
 6. On Windows run the "build.bat" script in the root directory
 
 
