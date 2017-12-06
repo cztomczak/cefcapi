@@ -32,6 +32,7 @@ Tested configurations:
     - Compilers: mingw-gcc 5.3.0 and TDM-gcc 5.1.0 on Windows 7 64-bit
 - Linux:
     - Binary: `cef_binary_3.3202.1692.g18a939d_linux64.tar.bz2`
+    - Compiler: Linux: gcc 4.8.2 on Ubuntu 14.04 64-bit
     - Compiler: gcc 6.3.0 on Debian 9.2 (stretch) 64-bit
 
 
