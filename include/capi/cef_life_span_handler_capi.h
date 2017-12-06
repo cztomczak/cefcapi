@@ -33,6 +33,8 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
+// $hash=fe38af40efe76e5d6babf0644d7d4af679a4ca6f$
+//
 
 #ifndef CEF_INCLUDE_CAPI_CEF_LIFE_SPAN_HANDLER_CAPI_H_
 #define CEF_INCLUDE_CAPI_CEF_LIFE_SPAN_HANDLER_CAPI_H_
@@ -59,7 +61,7 @@ typedef struct _cef_life_span_handler_t {
   cef_base_ref_counted_t base;
 
   ///
-  // Called on the IO thread before a new popup browser is created. The
+  // Called on the UI thread before a new popup browser is created. The
   // |browser| and |frame| values represent the source of the popup request. The
   // |target_url| and |target_frame_name| values indicate where the popup
   // browser should navigate and may be NULL if not specified with the request.
@@ -76,22 +78,30 @@ typedef struct _cef_life_span_handler_t {
   // is set to false (0) the new browser will not be scriptable and may not be
   // hosted in the same renderer process as the source browser. Any
   // modifications to |windowInfo| will be ignored if the parent browser is
-  // wrapped in a cef_browser_view_t.
+  // wrapped in a cef_browser_view_t. Popup browser creation will be canceled if
+  // the parent browser is destroyed before the popup browser creation completes
+  // (indicated by a call to OnAfterCreated for the popup browser).
   ///
-  int (CEF_CALLBACK *on_before_popup)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      const cef_string_t* target_url, const cef_string_t* target_frame_name,
-      cef_window_open_disposition_t target_disposition, int user_gesture,
+  int(CEF_CALLBACK* on_before_popup)(
+      struct _cef_life_span_handler_t* self,
+      struct _cef_browser_t* browser,
+      struct _cef_frame_t* frame,
+      const cef_string_t* target_url,
+      const cef_string_t* target_frame_name,
+      cef_window_open_disposition_t target_disposition,
+      int user_gesture,
       const struct _cef_popup_features_t* popupFeatures,
-      struct _cef_window_info_t* windowInfo, struct _cef_client_t** client,
-      struct _cef_browser_settings_t* settings, int* no_javascript_access);
+      struct _cef_window_info_t* windowInfo,
+      struct _cef_client_t** client,
+      struct _cef_browser_settings_t* settings,
+      int* no_javascript_access);
 
   ///
   // Called after a new browser is created. This callback will be the first
   // notification that references |browser|.
   ///
-  void (CEF_CALLBACK *on_after_created)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* browser);
+  void(CEF_CALLBACK* on_after_created)(struct _cef_life_span_handler_t* self,
+                                       struct _cef_browser_t* browser);
 
   ///
   // Called when a browser has recieved a request to close. This may result
@@ -182,8 +192,8 @@ typedef struct _cef_life_span_handler_t {
   // browsers
   //     exist.
   ///
-  int (CEF_CALLBACK *do_close)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* browser);
+  int(CEF_CALLBACK* do_close)(struct _cef_life_span_handler_t* self,
+                              struct _cef_browser_t* browser);
 
   ///
   // Called just before a browser is destroyed. Release all references to the
@@ -192,10 +202,9 @@ typedef struct _cef_life_span_handler_t {
   // notification that references |browser|. See do_close() documentation for
   // additional usage information.
   ///
-  void (CEF_CALLBACK *on_before_close)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* browser);
+  void(CEF_CALLBACK* on_before_close)(struct _cef_life_span_handler_t* self,
+                                      struct _cef_browser_t* browser);
 } cef_life_span_handler_t;
-
 
 #ifdef __cplusplus
 }
