@@ -5,8 +5,8 @@ Framework](https://bitbucket.org/chromiumembedded/cef)
 (in short CEF). Example creates a window, embeds a browser
 inside that window and loads Google website. Shows how to
 implement dummy reference counting and CEF structures with
-callbacks to implement CEF handlers like cef_app_t,
-cef_client_t and cef_life_span_handler_t.
+callbacks to implement CEF handlers like `cef_app_t`,
+`cef_client_t` and `cef_life_span_handler_t`.
 
 Table of contents:
 * [Examples](#examples)
