@@ -84,7 +84,12 @@ int main(int argc, char** argv) {
     initialize_gtk();
     GtkWidget* gtk_window = create_gtk_window("cefcapi example", 800, 600);
     cef_window_info_t window_info = {};
+    #if GTK_CHECK_VERSION(3,0,0)
+    Window xid = gdk_x11_window_get_xid(gtk_widget_get_window(gtk_window));
+    #else
     Window xid = gdk_x11_drawable_get_xid(gtk_widget_get_window(gtk_window));
+    #endif
+    printf("Window xid %u\n", (unsigned) xid);
     window_info.parent_window = xid;
 
     // Copied from upstream cefclient. Install xlib error
