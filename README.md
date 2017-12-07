@@ -13,7 +13,6 @@ Table of contents:
 * [Compatibility](#compatibility)
 * [Getting started](#getting-started)
 * [Updating CEF version](#updating-cef-version)
-* [Patch for gcc compiler on Windows](#patch-for-gcc-compiler-on-windows)
 * [Support development](#support-development)
 
 
