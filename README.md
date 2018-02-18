@@ -6,7 +6,10 @@ Framework](https://bitbucket.org/chromiumembedded/cef)
 inside that window and loads Google website. Shows how to
 implement dummy reference counting and CEF structures with
 callbacks to implement CEF handlers like `cef_app_t`,
-`cef_client_t` and `cef_life_span_handler_t`.
+`cef_client_t` and `cef_life_span_handler_t`. To understand
+and implement real reference counting see the
+[UsingTheCAPI](https://bitbucket.org/chromiumembedded/cef/wiki/UsingTheCAPI.md)
+wiki page in upstream CEF project.
 
 Table of contents:
 * [Examples](#examples)
