@@ -15,8 +15,8 @@ Table of contents:
 * [Examples](#examples)
 * [Compatibility](#compatibility)
 * [Getting started](#getting-started)
-* [Updating CEF version](#updating-cef-version)
 * [Support development](#support-development)
+* [Updating CEF version](#updating-cef-version)
 
 
 ## Examples
@@ -52,6 +52,18 @@ Tested configurations:
 6. On Windows run the "build.bat" script in the root directory
 
 
+## Support development
+
+If you would like to support general cefcapi development efforts
+by making a donation please click the Paypal Donate button:
+
+<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7LU7PD4N4GGG'>
+<img src='https://raw.githubusercontent.com/wiki/cztomczak/cefpython/images/donate.gif' />
+</a><br><br>
+
+For sponsorship opportunities please contact Czarek directly - contact details are available in his [Resume](https://drive.google.com/file/d/17xmoT5Z_zTHkVclqPzrs2aAV64Uiu7fh/view).
+
+
 ## Updating CEF version
 
 If you download a CEF version newer than `3.3202.1692` then
@@ -64,11 +76,4 @@ and "cef_version_linux.h" - these header files were copied
 from CEF binary distributions for appropriate platforms and
 their original file names were "cef_version.h".
 
-## Support development
 
-If you would like to support general cefcapi development efforts
-by making a donation please click the Paypal Donate button:
-
-<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7LU7PD4N4GGG'>
-<img src='https://raw.githubusercontent.com/wiki/cztomczak/cefpython/images/donate.gif' />
-</a><br><br>
