@@ -1,13 +1,13 @@
 # CEF C API (cefcapi)
 
 A simple example on how to use the C API in [Chromium Embedded
-Framework](https://bitbucket.org/chromiumembedded/cef)
-(in short CEF). Example creates a window, embeds a browser
-inside that window and loads Google website. Shows how to
-implement dummy reference counting and CEF structures with
-callbacks to implement CEF handlers like `cef_app_t`,
-`cef_client_t` and `cef_life_span_handler_t`. To understand
-and implement real reference counting see the
+Framework](https://bitbucket.org/chromiumembedded/cef) created by
+[Czarek Tomczak](https://drive.google.com/file/d/17xmoT5Z_zTHkVclqPzrs2aAV64Uiu7fh/view)
+(hire me!). Example creates a window, embeds a browser inside that window
+and loads Google website. Shows how to implement dummy reference
+counting and CEF structures with callbacks to implement CEF handlers
+like `cef_app_t`, `cef_client_t` and `cef_life_span_handler_t`.
+To understand and implement real reference counting see the
 [UsingTheCAPI](https://bitbucket.org/chromiumembedded/cef/wiki/UsingTheCAPI.md)
 wiki page in upstream CEF project.
 
@@ -23,7 +23,7 @@ Table of contents:
 
 - Windows: see [main_win.c](examples/main_win.c)
 - Linux: see [main_linux.c](examples/main_linux.c)
-- Mac: not available yet
+- Mac: not available yet ([Issue #15](../../issues/15))
 
 
 ## Compatibility
@@ -54,14 +54,12 @@ Tested configurations:
 
 ## Support development
 
-If you would like to support general cefcapi development efforts
+If you would like to support general CEF C API development efforts
 by making a donation please click the Paypal Donate button:
 
-<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7LU7PD4N4GGG'>
+<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHSHWR5JM4FN4'>
 <img src='https://raw.githubusercontent.com/wiki/cztomczak/cefpython/images/donate.gif' />
 </a><br><br>
-
-For sponsorship opportunities please contact Czarek directly - contact details are available in his [Resume](https://drive.google.com/file/d/17xmoT5Z_zTHkVclqPzrs2aAV64Uiu7fh/view).
 
 
 ## Updating CEF version
