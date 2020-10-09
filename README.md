@@ -2,7 +2,7 @@
 
 A simple example on how to use the C API in [Chromium Embedded
 Framework](https://bitbucket.org/chromiumembedded/cef) created by
-[Czarek Tomczak](https://drive.google.com/file/d/17xmoT5Z_zTHkVclqPzrs2aAV64Uiu7fh/view).
+[Czarek Tomczak](https://www.linkedin.com/in/czarektomczak/).
 Example creates a window, embeds a browser inside that window
 and loads Google website. Shows how to implement dummy reference
 counting and CEF structures with callbacks to implement CEF handlers
