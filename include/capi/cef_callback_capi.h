@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=68de2255fd429696d62115786fc480f1d5f9882b$
+// $hash=4fd98ff68ecb42677c3344b75e26d4787161b0d2$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_CALLBACK_CAPI_H_
@@ -47,36 +47,36 @@ extern "C" {
 #endif
 
 ///
-// Generic callback structure used for asynchronous continuation.
+/// Generic callback structure used for asynchronous continuation.
 ///
 typedef struct _cef_callback_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Continue processing.
+  /// Continue processing.
   ///
   void(CEF_CALLBACK* cont)(struct _cef_callback_t* self);
 
   ///
-  // Cancel processing.
+  /// Cancel processing.
   ///
   void(CEF_CALLBACK* cancel)(struct _cef_callback_t* self);
 } cef_callback_t;
 
 ///
-// Generic callback structure used for asynchronous completion.
+/// Generic callback structure used for asynchronous completion.
 ///
 typedef struct _cef_completion_callback_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Method that will be called once the task is complete.
+  /// Method that will be called once the task is complete.
   ///
   void(CEF_CALLBACK* on_complete)(struct _cef_completion_callback_t* self);
 } cef_completion_callback_t;

@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=04ddf8c8cc5e09610a6cd6dbee96194eb6567b41$
+// $hash=d807c7566ce3085243e9e7ea279fee7241acfc5f$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_RENDER_PROCESS_HANDLER_CAPI_H_
@@ -54,74 +54,56 @@ extern "C" {
 #endif
 
 ///
-// Structure used to implement render process callbacks. The functions of this
-// structure will be called on the render process main thread (TID_RENDERER)
-// unless otherwise indicated.
+/// Structure used to implement render process callbacks. The functions of this
+/// structure will be called on the render process main thread (TID_RENDERER)
+/// unless otherwise indicated.
 ///
 typedef struct _cef_render_process_handler_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Called after the render process main thread has been created. |extra_info|
-  // is a read-only value originating from
-  // cef_browser_process_handler_t::on_render_process_thread_created(). Do not
-  // keep a reference to |extra_info| outside of this function.
-  ///
-  void(CEF_CALLBACK* on_render_thread_created)(
-      struct _cef_render_process_handler_t* self,
-      struct _cef_list_value_t* extra_info);
-
-  ///
-  // Called after WebKit has been initialized.
+  /// Called after WebKit has been initialized.
   ///
   void(CEF_CALLBACK* on_web_kit_initialized)(
       struct _cef_render_process_handler_t* self);
 
   ///
-  // Called after a browser has been created. When browsing cross-origin a new
-  // browser will be created before the old browser with the same identifier is
-  // destroyed.
+  /// Called after a browser has been created. When browsing cross-origin a new
+  /// browser will be created before the old browser with the same identifier is
+  /// destroyed. |extra_info| is an optional read-only value originating from
+  /// cef_browser_host_t::cef_browser_host_create_browser(),
+  /// cef_browser_host_t::cef_browser_host_create_browser_sync(),
+  /// cef_life_span_handler_t::on_before_popup() or
+  /// cef_browser_view_t::cef_browser_view_create().
   ///
   void(CEF_CALLBACK* on_browser_created)(
       struct _cef_render_process_handler_t* self,
-      struct _cef_browser_t* browser);
+      struct _cef_browser_t* browser,
+      struct _cef_dictionary_value_t* extra_info);
 
   ///
-  // Called before a browser is destroyed.
+  /// Called before a browser is destroyed.
   ///
   void(CEF_CALLBACK* on_browser_destroyed)(
       struct _cef_render_process_handler_t* self,
       struct _cef_browser_t* browser);
 
   ///
-  // Return the handler for browser load status events.
+  /// Return the handler for browser load status events.
   ///
   struct _cef_load_handler_t*(CEF_CALLBACK* get_load_handler)(
       struct _cef_render_process_handler_t* self);
 
   ///
-  // Called before browser navigation. Return true (1) to cancel the navigation
-  // or false (0) to allow the navigation to proceed. The |request| object
-  // cannot be modified in this callback.
-  ///
-  int(CEF_CALLBACK* on_before_navigation)(
-      struct _cef_render_process_handler_t* self,
-      struct _cef_browser_t* browser,
-      struct _cef_frame_t* frame,
-      struct _cef_request_t* request,
-      cef_navigation_type_t navigation_type,
-      int is_redirect);
-
-  ///
-  // Called immediately after the V8 context for a frame has been created. To
-  // retrieve the JavaScript 'window' object use the
-  // cef_v8context_t::get_global() function. V8 handles can only be accessed
-  // from the thread on which they are created. A task runner for posting tasks
-  // on the associated thread can be retrieved via the
-  // cef_v8context_t::get_task_runner() function.
+  /// Called immediately after the V8 context for a frame has been created. To
+  /// retrieve the JavaScript 'window' object use the
+  /// cef_v8context_t::get_global() function. V8 handles can only be accessed
+  /// from the thread on which they are created. A task runner for posting tasks
+  /// on the associated thread can be retrieved via the
+  /// cef_v8context_t::get_task_runner() function.
   ///
   void(CEF_CALLBACK* on_context_created)(
       struct _cef_render_process_handler_t* self,
@@ -130,8 +112,8 @@ typedef struct _cef_render_process_handler_t {
       struct _cef_v8context_t* context);
 
   ///
-  // Called immediately before the V8 context for a frame is released. No
-  // references to the context should be kept after this function is called.
+  /// Called immediately before the V8 context for a frame is released. No
+  /// references to the context should be kept after this function is called.
   ///
   void(CEF_CALLBACK* on_context_released)(
       struct _cef_render_process_handler_t* self,
@@ -140,9 +122,9 @@ typedef struct _cef_render_process_handler_t {
       struct _cef_v8context_t* context);
 
   ///
-  // Called for global uncaught exceptions in a frame. Execution of this
-  // callback is disabled by default. To enable set
-  // CefSettings.uncaught_exception_stack_size > 0.
+  /// Called for global uncaught exceptions in a frame. Execution of this
+  /// callback is disabled by default. To enable set
+  /// cef_settings_t.uncaught_exception_stack_size > 0.
   ///
   void(CEF_CALLBACK* on_uncaught_exception)(
       struct _cef_render_process_handler_t* self,
@@ -153,12 +135,12 @@ typedef struct _cef_render_process_handler_t {
       struct _cef_v8stack_trace_t* stackTrace);
 
   ///
-  // Called when a new node in the the browser gets focus. The |node| value may
-  // be NULL if no specific node has gained focus. The node object passed to
-  // this function represents a snapshot of the DOM at the time this function is
-  // executed. DOM objects are only valid for the scope of this function. Do not
-  // keep references to or attempt to access any DOM objects outside the scope
-  // of this function.
+  /// Called when a new node in the the browser gets focus. The |node| value may
+  /// be NULL if no specific node has gained focus. The node object passed to
+  /// this function represents a snapshot of the DOM at the time this function
+  /// is executed. DOM objects are only valid for the scope of this function. Do
+  /// not keep references to or attempt to access any DOM objects outside the
+  /// scope of this function.
   ///
   void(CEF_CALLBACK* on_focused_node_changed)(
       struct _cef_render_process_handler_t* self,
@@ -167,13 +149,14 @@ typedef struct _cef_render_process_handler_t {
       struct _cef_domnode_t* node);
 
   ///
-  // Called when a new message is received from a different process. Return true
-  // (1) if the message was handled or false (0) otherwise. Do not keep a
-  // reference to or attempt to access the message outside of this callback.
+  /// Called when a new message is received from a different process. Return
+  /// true (1) if the message was handled or false (0) otherwise. It is safe to
+  /// keep a reference to |message| outside of this callback.
   ///
   int(CEF_CALLBACK* on_process_message_received)(
       struct _cef_render_process_handler_t* self,
       struct _cef_browser_t* browser,
+      struct _cef_frame_t* frame,
       cef_process_id_t source_process,
       struct _cef_process_message_t* message);
 } cef_render_process_handler_t;

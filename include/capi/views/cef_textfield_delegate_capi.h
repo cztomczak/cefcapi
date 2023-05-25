@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=542381be4ca1f8b31da984b8ba9a13696da3917c$
+// $hash=482b091326684014bd799fef864e3dfdfc8693a1$
 //
 
 #ifndef CEF_INCLUDE_CAPI_VIEWS_CEF_TEXTFIELD_DELEGATE_CAPI_H_
@@ -49,27 +49,27 @@ extern "C" {
 struct _cef_textfield_t;
 
 ///
-// Implement this structure to handle Textfield events. The functions of this
-// structure will be called on the browser process UI thread unless otherwise
-// indicated.
+/// Implement this structure to handle Textfield events. The functions of this
+/// structure will be called on the browser process UI thread unless otherwise
+/// indicated.
 ///
 typedef struct _cef_textfield_delegate_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_view_delegate_t base;
 
   ///
-  // Called when |textfield| recieves a keyboard event. |event| contains
-  // information about the keyboard event. Return true (1) if the keyboard event
-  // was handled or false (0) otherwise for default handling.
+  /// Called when |textfield| recieves a keyboard event. |event| contains
+  /// information about the keyboard event. Return true (1) if the keyboard
+  /// event was handled or false (0) otherwise for default handling.
   ///
   int(CEF_CALLBACK* on_key_event)(struct _cef_textfield_delegate_t* self,
                                   struct _cef_textfield_t* textfield,
-                                  const struct _cef_key_event_t* event);
+                                  const cef_key_event_t* event);
 
   ///
-  // Called after performing a user action that may change |textfield|.
+  /// Called after performing a user action that may change |textfield|.
   ///
   void(CEF_CALLBACK* on_after_user_action)(
       struct _cef_textfield_delegate_t* self,

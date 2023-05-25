@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=a43c32d6951dd8f125f87d21948798f4d596768e$
+// $hash=4d10dad2278e6d61367b3deaf501a0e7b4fd60e9$
 //
 
 #ifndef CEF_INCLUDE_CAPI_TEST_CEF_TEST_HELPERS_CAPI_H_
@@ -52,12 +52,20 @@ extern "C" {
 #endif
 
 ///
-// Execute JavaScript with a user gesture to trigger functionality like
-// onbeforeunload handlers that will otherwise be blocked.
+/// Execute JavaScript with a user gesture to trigger functionality like
+/// onbeforeunload handlers that will otherwise be blocked.
 ///
 CEF_EXPORT void cef_execute_java_script_with_user_gesture_for_tests(
     struct _cef_frame_t* frame,
     const cef_string_t* javascript);
+
+///
+/// Set the DIR_SRC_TEST_DATA_ROOT directory used to load test data. Must be
+/// configured when running from a CEF binary distribution. Defaults to the
+/// "chromium/src" directory when running from a local CEF/Chromium build. |dir|
+/// must be an absolute path.
+///
+CEF_EXPORT void cef_set_data_directory_for_tests(const cef_string_t* dir);
 
 #ifdef __cplusplus
 }

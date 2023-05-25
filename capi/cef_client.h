@@ -76,15 +76,15 @@ struct _cef_focus_handler_t* CEF_CALLBACK get_focus_handler(
     return NULL;
 }
 
-///
-// Return the handler for geolocation permissions requests. If no handler is
-// provided geolocation access will be denied by default.
-///
-struct _cef_geolocation_handler_t* CEF_CALLBACK get_geolocation_handler(
-        struct _cef_client_t* self) {
-    DEBUG_CALLBACK("get_geolocation_handler\n");
-    return NULL;
-}
+// ///
+// // Return the handler for geolocation permissions requests. If no handler is
+// // provided geolocation access will be denied by default.
+// ///
+// struct _cef_geolocation_handler_t* CEF_CALLBACK get_geolocation_handler(
+//         struct _cef_client_t* self) {
+//     DEBUG_CALLBACK("get_geolocation_handler\n");
+//     return NULL;
+// }
 
 ///
 // Return the handler for JavaScript dialogs. If no handler is provided the
@@ -149,8 +149,11 @@ struct _cef_request_handler_t* CEF_CALLBACK get_request_handler(
 ///
 int CEF_CALLBACK on_process_message_received(
         struct _cef_client_t* self,
-        struct _cef_browser_t* browser, cef_process_id_t source_process,
-        struct _cef_process_message_t* message) {
+        struct _cef_browser_t* browser,
+        struct _cef_frame_t* frame,
+        cef_process_id_t source_process,
+        struct _cef_process_message_t* message
+) {
     DEBUG_CALLBACK("on_process_message_received\n");
     return 0;
 }
@@ -166,7 +169,7 @@ void initialize_cef_client(cef_client_t* client) {
     client->get_download_handler = get_download_handler;
     client->get_drag_handler = get_drag_handler;
     client->get_focus_handler = get_focus_handler;
-    client->get_geolocation_handler = get_geolocation_handler;
+    // client->get_geolocation_handler = get_geolocation_handler;
     client->get_jsdialog_handler = get_jsdialog_handler;
     client->get_keyboard_handler = get_keyboard_handler;
     client->get_life_span_handler = get_life_span_handler;  // Implemented!

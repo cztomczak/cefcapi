@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=82f2ce6f2ea3a8268ac69e33d304ace1a0e192b2$
+// $hash=e8e8dd2730a47aad9414f7bfc2e6ad96aba2c875$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_RESOURCE_BUNDLE_CAPI_H_
@@ -41,28 +41,29 @@
 #pragma once
 
 #include "include/capi/cef_base_capi.h"
+#include "include/capi/cef_values_capi.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 ///
-// Structure used for retrieving resources from the resource bundle (*.pak)
-// files loaded by CEF during startup or via the cef_resource_bundle_tHandler
-// returned from cef_app_t::GetResourceBundleHandler. See CefSettings for
-// additional options related to resource bundle loading. The functions of this
-// structure may be called on any thread unless otherwise indicated.
+/// Structure used for retrieving resources from the resource bundle (*.pak)
+/// files loaded by CEF during startup or via the cef_resource_bundle_handler_t
+/// returned from cef_app_t::GetResourceBundleHandler. See CefSettings for
+/// additional options related to resource bundle loading. The functions of this
+/// structure may be called on any thread unless otherwise indicated.
 ///
 typedef struct _cef_resource_bundle_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Returns the localized string for the specified |string_id| or an NULL
-  // string if the value is not found. Include cef_pack_strings.h for a listing
-  // of valid string ID values.
+  /// Returns the localized string for the specified |string_id| or an NULL
+  /// string if the value is not found. Include cef_pack_strings.h for a listing
+  /// of valid string ID values.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
   cef_string_userfree_t(CEF_CALLBACK* get_localized_string)(
@@ -70,40 +71,31 @@ typedef struct _cef_resource_bundle_t {
       int string_id);
 
   ///
-  // Retrieves the contents of the specified scale independent |resource_id|. If
-  // the value is found then |data| and |data_size| will be populated and this
-  // function will return true (1). If the value is not found then this function
-  // will return false (0). The returned |data| pointer will remain resident in
-  // memory and should not be freed. Include cef_pack_resources.h for a listing
-  // of valid resource ID values.
+  /// Returns a cef_binary_value_t containing the decompressed contents of the
+  /// specified scale independent |resource_id| or NULL if not found. Include
+  /// cef_pack_resources.h for a listing of valid resource ID values.
   ///
-  int(CEF_CALLBACK* get_data_resource)(struct _cef_resource_bundle_t* self,
-                                       int resource_id,
-                                       void** data,
-                                       size_t* data_size);
+  struct _cef_binary_value_t*(CEF_CALLBACK* get_data_resource)(
+      struct _cef_resource_bundle_t* self,
+      int resource_id);
 
   ///
-  // Retrieves the contents of the specified |resource_id| nearest the scale
-  // factor |scale_factor|. Use a |scale_factor| value of SCALE_FACTOR_NONE for
-  // scale independent resources or call GetDataResource instead. If the value
-  // is found then |data| and |data_size| will be populated and this function
-  // will return true (1). If the value is not found then this function will
-  // return false (0). The returned |data| pointer will remain resident in
-  // memory and should not be freed. Include cef_pack_resources.h for a listing
-  // of valid resource ID values.
+  /// Returns a cef_binary_value_t containing the decompressed contents of the
+  /// specified |resource_id| nearest the scale factor |scale_factor| or NULL if
+  /// not found. Use a |scale_factor| value of SCALE_FACTOR_NONE for scale
+  /// independent resources or call GetDataResource instead.Include
+  /// cef_pack_resources.h for a listing of valid resource ID values.
   ///
-  int(CEF_CALLBACK* get_data_resource_for_scale)(
+  struct _cef_binary_value_t*(CEF_CALLBACK* get_data_resource_for_scale)(
       struct _cef_resource_bundle_t* self,
       int resource_id,
-      cef_scale_factor_t scale_factor,
-      void** data,
-      size_t* data_size);
+      cef_scale_factor_t scale_factor);
 } cef_resource_bundle_t;
 
 ///
-// Returns the global resource bundle instance.
+/// Returns the global resource bundle instance.
 ///
-CEF_EXPORT cef_resource_bundle_t* cef_resource_bundle_get_global();
+CEF_EXPORT cef_resource_bundle_t* cef_resource_bundle_get_global(void);
 
 #ifdef __cplusplus
 }

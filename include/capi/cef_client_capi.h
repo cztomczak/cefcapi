@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,14 +33,16 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=7f554250e73537ece3f8f67310c23e718f91d41b$
+// $hash=eb9dcb574252483dfab12834af93ba14138d4089$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
 #define CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
 #pragma once
 
+#include "include/capi/cef_audio_handler_capi.h"
 #include "include/capi/cef_base_capi.h"
+#include "include/capi/cef_command_handler_capi.h"
 #include "include/capi/cef_context_menu_handler_capi.h"
 #include "include/capi/cef_dialog_handler_capi.h"
 #include "include/capi/cef_display_handler_capi.h"
@@ -48,11 +50,13 @@
 #include "include/capi/cef_drag_handler_capi.h"
 #include "include/capi/cef_find_handler_capi.h"
 #include "include/capi/cef_focus_handler_capi.h"
-#include "include/capi/cef_geolocation_handler_capi.h"
+#include "include/capi/cef_frame_handler_capi.h"
 #include "include/capi/cef_jsdialog_handler_capi.h"
 #include "include/capi/cef_keyboard_handler_capi.h"
 #include "include/capi/cef_life_span_handler_capi.h"
 #include "include/capi/cef_load_handler_capi.h"
+#include "include/capi/cef_permission_handler_capi.h"
+#include "include/capi/cef_print_handler_capi.h"
 #include "include/capi/cef_process_message_capi.h"
 #include "include/capi/cef_render_handler_capi.h"
 #include "include/capi/cef_request_handler_capi.h"
@@ -62,111 +66,139 @@ extern "C" {
 #endif
 
 ///
-// Implement this structure to provide handler implementations.
+/// Implement this structure to provide handler implementations.
 ///
 typedef struct _cef_client_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Return the handler for context menus. If no handler is provided the default
-  // implementation will be used.
+  /// Return the handler for audio rendering events.
+  ///
+  struct _cef_audio_handler_t*(CEF_CALLBACK* get_audio_handler)(
+      struct _cef_client_t* self);
+
+  ///
+  /// Return the handler for commands. If no handler is provided the default
+  /// implementation will be used.
+  ///
+  struct _cef_command_handler_t*(CEF_CALLBACK* get_command_handler)(
+      struct _cef_client_t* self);
+
+  ///
+  /// Return the handler for context menus. If no handler is provided the
+  /// default implementation will be used.
   ///
   struct _cef_context_menu_handler_t*(CEF_CALLBACK* get_context_menu_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for dialogs. If no handler is provided the default
-  // implementation will be used.
+  /// Return the handler for dialogs. If no handler is provided the default
+  /// implementation will be used.
   ///
   struct _cef_dialog_handler_t*(CEF_CALLBACK* get_dialog_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for browser display state events.
+  /// Return the handler for browser display state events.
   ///
   struct _cef_display_handler_t*(CEF_CALLBACK* get_display_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for download events. If no handler is returned downloads
-  // will not be allowed.
+  /// Return the handler for download events. If no handler is returned
+  /// downloads will not be allowed.
   ///
   struct _cef_download_handler_t*(CEF_CALLBACK* get_download_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for drag events.
+  /// Return the handler for drag events.
   ///
   struct _cef_drag_handler_t*(CEF_CALLBACK* get_drag_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for find result events.
+  /// Return the handler for find result events.
   ///
   struct _cef_find_handler_t*(CEF_CALLBACK* get_find_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for focus events.
+  /// Return the handler for focus events.
   ///
   struct _cef_focus_handler_t*(CEF_CALLBACK* get_focus_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for geolocation permissions requests. If no handler is
-  // provided geolocation access will be denied by default.
+  /// Return the handler for events related to cef_frame_t lifespan. This
+  /// function will be called once during cef_browser_t creation and the result
+  /// will be cached for performance reasons.
   ///
-  struct _cef_geolocation_handler_t*(CEF_CALLBACK* get_geolocation_handler)(
+  struct _cef_frame_handler_t*(CEF_CALLBACK* get_frame_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for JavaScript dialogs. If no handler is provided the
-  // default implementation will be used.
+  /// Return the handler for permission requests.
+  ///
+  struct _cef_permission_handler_t*(CEF_CALLBACK* get_permission_handler)(
+      struct _cef_client_t* self);
+
+  ///
+  /// Return the handler for JavaScript dialogs. If no handler is provided the
+  /// default implementation will be used.
   ///
   struct _cef_jsdialog_handler_t*(CEF_CALLBACK* get_jsdialog_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for keyboard events.
+  /// Return the handler for keyboard events.
   ///
   struct _cef_keyboard_handler_t*(CEF_CALLBACK* get_keyboard_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for browser life span events.
+  /// Return the handler for browser life span events.
   ///
   struct _cef_life_span_handler_t*(CEF_CALLBACK* get_life_span_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for browser load status events.
+  /// Return the handler for browser load status events.
   ///
   struct _cef_load_handler_t*(CEF_CALLBACK* get_load_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for off-screen rendering events.
+  /// Return the handler for printing on Linux. If a print handler is not
+  /// provided then printing will not be supported on the Linux platform.
+  ///
+  struct _cef_print_handler_t*(CEF_CALLBACK* get_print_handler)(
+      struct _cef_client_t* self);
+
+  ///
+  /// Return the handler for off-screen rendering events.
   ///
   struct _cef_render_handler_t*(CEF_CALLBACK* get_render_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Return the handler for browser request events.
+  /// Return the handler for browser request events.
   ///
   struct _cef_request_handler_t*(CEF_CALLBACK* get_request_handler)(
       struct _cef_client_t* self);
 
   ///
-  // Called when a new message is received from a different process. Return true
-  // (1) if the message was handled or false (0) otherwise. Do not keep a
-  // reference to or attempt to access the message outside of this callback.
+  /// Called when a new message is received from a different process. Return
+  /// true (1) if the message was handled or false (0) otherwise.  It is safe to
+  /// keep a reference to |message| outside of this callback.
   ///
   int(CEF_CALLBACK* on_process_message_received)(
       struct _cef_client_t* self,
       struct _cef_browser_t* browser,
+      struct _cef_frame_t* frame,
       cef_process_id_t source_process,
       struct _cef_process_message_t* message);
 } cef_client_t;

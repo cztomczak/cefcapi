@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=ade29136d75b33f63cf65db4b91de9cd66114562$
+// $hash=0ac3c8ca887778a840c65108d56038d4d776e073$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_ACCESSIBILITY_HANDLER_CAPI_H_
@@ -47,27 +47,27 @@ extern "C" {
 #endif
 
 ///
-// Implement this structure to receive accessibility notification when
-// accessibility events have been registered. The functions of this structure
-// will be called on the UI thread.
+/// Implement this structure to receive accessibility notification when
+/// accessibility events have been registered. The functions of this structure
+/// will be called on the UI thread.
 ///
 typedef struct _cef_accessibility_handler_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Called after renderer process sends accessibility tree changes to the
-  // browser process.
+  /// Called after renderer process sends accessibility tree changes to the
+  /// browser process.
   ///
   void(CEF_CALLBACK* on_accessibility_tree_change)(
       struct _cef_accessibility_handler_t* self,
       struct _cef_value_t* value);
 
   ///
-  // Called after renderer process sends accessibility location changes to the
-  // browser process.
+  /// Called after renderer process sends accessibility location changes to the
+  /// browser process.
   ///
   void(CEF_CALLBACK* on_accessibility_location_change)(
       struct _cef_accessibility_handler_t* self,

@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=ec6ad7d358194b055c2c2b5bda3d6b9c6429185a$
+// $hash=e3aa3fbb265a600d498884b0fbb852fc5bbf8856$
 //
 
 #ifndef CEF_INCLUDE_CAPI_VIEWS_CEF_SCROLL_VIEW_CAPI_H_
@@ -47,60 +47,60 @@ extern "C" {
 #endif
 
 ///
-// A ScrollView will show horizontal and/or vertical scrollbars when necessary
-// based on the size of the attached content view. Methods must be called on the
-// browser process UI thread unless otherwise indicated.
+/// A ScrollView will show horizontal and/or vertical scrollbars when necessary
+/// based on the size of the attached content view. Methods must be called on
+/// the browser process UI thread unless otherwise indicated.
 ///
 typedef struct _cef_scroll_view_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_view_t base;
 
   ///
-  // Set the content View. The content View must have a specified size (e.g. via
-  // cef_view_t::SetBounds or cef_view_tDelegate::GetPreferredSize).
+  /// Set the content View. The content View must have a specified size (e.g.
+  /// via cef_view_t::SetBounds or cef_view_delegate_t::GetPreferredSize).
   ///
   void(CEF_CALLBACK* set_content_view)(struct _cef_scroll_view_t* self,
                                        struct _cef_view_t* view);
 
   ///
-  // Returns the content View.
+  /// Returns the content View.
   ///
   struct _cef_view_t*(CEF_CALLBACK* get_content_view)(
       struct _cef_scroll_view_t* self);
 
   ///
-  // Returns the visible region of the content View.
+  /// Returns the visible region of the content View.
   ///
   cef_rect_t(CEF_CALLBACK* get_visible_content_rect)(
       struct _cef_scroll_view_t* self);
 
   ///
-  // Returns true (1) if the horizontal scrollbar is currently showing.
+  /// Returns true (1) if the horizontal scrollbar is currently showing.
   ///
   int(CEF_CALLBACK* has_horizontal_scrollbar)(struct _cef_scroll_view_t* self);
 
   ///
-  // Returns the height of the horizontal scrollbar.
+  /// Returns the height of the horizontal scrollbar.
   ///
   int(CEF_CALLBACK* get_horizontal_scrollbar_height)(
       struct _cef_scroll_view_t* self);
 
   ///
-  // Returns true (1) if the vertical scrollbar is currently showing.
+  /// Returns true (1) if the vertical scrollbar is currently showing.
   ///
   int(CEF_CALLBACK* has_vertical_scrollbar)(struct _cef_scroll_view_t* self);
 
   ///
-  // Returns the width of the vertical scrollbar.
+  /// Returns the width of the vertical scrollbar.
   ///
   int(CEF_CALLBACK* get_vertical_scrollbar_width)(
       struct _cef_scroll_view_t* self);
 } cef_scroll_view_t;
 
 ///
-// Create a new ScrollView.
+/// Create a new ScrollView.
 ///
 CEF_EXPORT cef_scroll_view_t* cef_scroll_view_create(
     struct _cef_view_delegate_t* delegate);
