@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=897f5b1ec6ed7430fff156f47b4ce6371d5db6f2$
+// $hash=d09937fb047debd9da39c4072a434659b3c5682c$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_PRINT_HANDLER_CAPI_H_
@@ -49,65 +49,66 @@ extern "C" {
 #endif
 
 ///
-// Callback structure for asynchronous continuation of print dialog requests.
+/// Callback structure for asynchronous continuation of print dialog requests.
 ///
 typedef struct _cef_print_dialog_callback_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Continue printing with the specified |settings|.
+  /// Continue printing with the specified |settings|.
   ///
   void(CEF_CALLBACK* cont)(struct _cef_print_dialog_callback_t* self,
                            struct _cef_print_settings_t* settings);
 
   ///
-  // Cancel the printing.
+  /// Cancel the printing.
   ///
   void(CEF_CALLBACK* cancel)(struct _cef_print_dialog_callback_t* self);
 } cef_print_dialog_callback_t;
 
 ///
-// Callback structure for asynchronous continuation of print job requests.
+/// Callback structure for asynchronous continuation of print job requests.
 ///
 typedef struct _cef_print_job_callback_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Indicate completion of the print job.
+  /// Indicate completion of the print job.
   ///
   void(CEF_CALLBACK* cont)(struct _cef_print_job_callback_t* self);
 } cef_print_job_callback_t;
 
 ///
-// Implement this structure to handle printing on Linux. Each browser will have
-// only one print job in progress at a time. The functions of this structure
-// will be called on the browser process UI thread.
+/// Implement this structure to handle printing on Linux. Each browser will have
+/// only one print job in progress at a time. The functions of this structure
+/// will be called on the browser process UI thread.
 ///
 typedef struct _cef_print_handler_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Called when printing has started for the specified |browser|. This function
-  // will be called before the other OnPrint*() functions and irrespective of
-  // how printing was initiated (e.g. cef_browser_host_t::print(), JavaScript
-  // window.print() or PDF extension print button).
+  /// Called when printing has started for the specified |browser|. This
+  /// function will be called before the other OnPrint*() functions and
+  /// irrespective of how printing was initiated (e.g.
+  /// cef_browser_host_t::print(), JavaScript window.print() or PDF extension
+  /// print button).
   ///
   void(CEF_CALLBACK* on_print_start)(struct _cef_print_handler_t* self,
                                      struct _cef_browser_t* browser);
 
   ///
-  // Synchronize |settings| with client state. If |get_defaults| is true (1)
-  // then populate |settings| with the default print settings. Do not keep a
-  // reference to |settings| outside of this callback.
+  /// Synchronize |settings| with client state. If |get_defaults| is true (1)
+  /// then populate |settings| with the default print settings. Do not keep a
+  /// reference to |settings| outside of this callback.
   ///
   void(CEF_CALLBACK* on_print_settings)(struct _cef_print_handler_t* self,
                                         struct _cef_browser_t* browser,
@@ -115,9 +116,9 @@ typedef struct _cef_print_handler_t {
                                         int get_defaults);
 
   ///
-  // Show the print dialog. Execute |callback| once the dialog is dismissed.
-  // Return true (1) if the dialog will be displayed or false (0) to cancel the
-  // printing immediately.
+  /// Show the print dialog. Execute |callback| once the dialog is dismissed.
+  /// Return true (1) if the dialog will be displayed or false (0) to cancel the
+  /// printing immediately.
   ///
   int(CEF_CALLBACK* on_print_dialog)(
       struct _cef_print_handler_t* self,
@@ -126,9 +127,9 @@ typedef struct _cef_print_handler_t {
       struct _cef_print_dialog_callback_t* callback);
 
   ///
-  // Send the print job to the printer. Execute |callback| once the job is
-  // completed. Return true (1) if the job will proceed or false (0) to cancel
-  // the job immediately.
+  /// Send the print job to the printer. Execute |callback| once the job is
+  /// completed. Return true (1) if the job will proceed or false (0) to cancel
+  /// the job immediately.
   ///
   int(CEF_CALLBACK* on_print_job)(struct _cef_print_handler_t* self,
                                   struct _cef_browser_t* browser,
@@ -137,17 +138,18 @@ typedef struct _cef_print_handler_t {
                                   struct _cef_print_job_callback_t* callback);
 
   ///
-  // Reset client state related to printing.
+  /// Reset client state related to printing.
   ///
   void(CEF_CALLBACK* on_print_reset)(struct _cef_print_handler_t* self,
                                      struct _cef_browser_t* browser);
 
   ///
-  // Return the PDF paper size in device units. Used in combination with
-  // cef_browser_host_t::print_to_pdf().
+  /// Return the PDF paper size in device units. Used in combination with
+  /// cef_browser_host_t::print_to_pdf().
   ///
   cef_size_t(CEF_CALLBACK* get_pdf_paper_size)(
       struct _cef_print_handler_t* self,
+      struct _cef_browser_t* browser,
       int device_units_per_inch);
 } cef_print_handler_t;
 

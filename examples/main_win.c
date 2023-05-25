@@ -11,7 +11,7 @@
 #include "capi/cef_client.h"
 #include "capi/cef_life_span_handler.h"
 
-#include "include/cef_version_win.h"
+#include "include/cef_version.h"
 
 // Globals
 cef_life_span_handler_t g_life_span_handler = {};
@@ -79,10 +79,10 @@ int main(int argc, char** argv) {
     window_info.style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN \
             | WS_CLIPSIBLINGS | WS_VISIBLE;
     window_info.parent_window = NULL;
-    window_info.x = CW_USEDEFAULT;
-    window_info.y = CW_USEDEFAULT;
-    window_info.width = CW_USEDEFAULT;
-    window_info.height = CW_USEDEFAULT;
+    // window_info.x = CW_USEDEFAULT;
+    // window_info.y = CW_USEDEFAULT;
+    // window_info.width = CW_USEDEFAULT;
+    // window_info.height = CW_USEDEFAULT;
 
     // Window info - window title
     char window_name[] = "cefcapi example";
@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     // synchronous version of this function available.
     printf("cef_browser_host_create_browser\n");
     cef_browser_host_create_browser(&window_info, &client, &cef_url,
-                                    &browser_settings, NULL);
+                                    &browser_settings, NULL, NULL);
 
     // Message loop. There is also cef_do_message_loop_work()
     // that allow for integrating with existing message loops.

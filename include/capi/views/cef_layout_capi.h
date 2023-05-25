@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=0fd9d445840558956dbe281f1d5d20ec003684d1$
+// $hash=c4a17c07bb2a3518fc5b7350efdc13ffeb803747$
 //
 
 #ifndef CEF_INCLUDE_CAPI_VIEWS_CEF_LAYOUT_CAPI_H_
@@ -50,30 +50,30 @@ struct _cef_box_layout_t;
 struct _cef_fill_layout_t;
 
 ///
-// A Layout handles the sizing of the children of a Panel according to
-// implementation-specific heuristics. Methods must be called on the browser
-// process UI thread unless otherwise indicated.
+/// A Layout handles the sizing of the children of a Panel according to
+/// implementation-specific heuristics. Methods must be called on the browser
+/// process UI thread unless otherwise indicated.
 ///
 typedef struct _cef_layout_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Returns this Layout as a BoxLayout or NULL if this is not a BoxLayout.
+  /// Returns this Layout as a BoxLayout or NULL if this is not a BoxLayout.
   ///
   struct _cef_box_layout_t*(CEF_CALLBACK* as_box_layout)(
       struct _cef_layout_t* self);
 
   ///
-  // Returns this Layout as a FillLayout or NULL if this is not a FillLayout.
+  /// Returns this Layout as a FillLayout or NULL if this is not a FillLayout.
   ///
   struct _cef_fill_layout_t*(CEF_CALLBACK* as_fill_layout)(
       struct _cef_layout_t* self);
 
   ///
-  // Returns true (1) if this Layout is valid.
+  /// Returns true (1) if this Layout is valid.
   ///
   int(CEF_CALLBACK* is_valid)(struct _cef_layout_t* self);
 } cef_layout_t;

@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=cf3b867dfc26e13b96f2e20fe8b974a38d28119e$
+// $hash=dcfa5d39d1355b2c675637a13378f43376a8053e$
 //
 
 #ifndef CEF_INCLUDE_CAPI_VIEWS_CEF_MENU_BUTTON_CAPI_H_
@@ -49,22 +49,23 @@ extern "C" {
 #endif
 
 ///
-// MenuButton is a button with optional text, icon and/or menu marker that shows
-// a menu when clicked with the left mouse button. All size and position values
-// are in density independent pixels (DIP) unless otherwise indicated. Methods
-// must be called on the browser process UI thread unless otherwise indicated.
+/// MenuButton is a button with optional text, icon and/or menu marker that
+/// shows a menu when clicked with the left mouse button. All size and position
+/// values are in density independent pixels (DIP) unless otherwise indicated.
+/// Methods must be called on the browser process UI thread unless otherwise
+/// indicated.
 ///
 typedef struct _cef_menu_button_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_label_button_t base;
 
   ///
-  // Show a menu with contents |menu_model|. |screen_point| specifies the menu
-  // position in screen coordinates. |anchor_position| specifies how the menu
-  // will be anchored relative to |screen_point|. This function should be called
-  // from cef_menu_button_delegate_t::on_menu_button_pressed().
+  /// Show a menu with contents |menu_model|. |screen_point| specifies the menu
+  /// position in screen coordinates. |anchor_position| specifies how the menu
+  /// will be anchored relative to |screen_point|. This function should be
+  /// called from cef_menu_button_delegate_t::on_menu_button_pressed().
   ///
   void(CEF_CALLBACK* show_menu)(struct _cef_menu_button_t* self,
                                 struct _cef_menu_model_t* menu_model,
@@ -72,27 +73,24 @@ typedef struct _cef_menu_button_t {
                                 cef_menu_anchor_position_t anchor_position);
 
   ///
-  // Show the menu for this button. Results in a call to
-  // cef_menu_button_delegate_t::on_menu_button_pressed().
+  /// Show the menu for this button. Results in a call to
+  /// cef_menu_button_delegate_t::on_menu_button_pressed().
   ///
   void(CEF_CALLBACK* trigger_menu)(struct _cef_menu_button_t* self);
 } cef_menu_button_t;
 
 ///
-// Create a new MenuButton. A |delegate| must be provided to call show_menu()
-// when the button is clicked. |text| will be shown on the MenuButton and used
-// as the default accessible name. If |with_frame| is true (1) the button will
-// have a visible frame at all times, center alignment, additional padding and a
-// default minimum size of 70x33 DIP. If |with_frame| is false (0) the button
-// will only have a visible frame on hover/press, left alignment, less padding
-// and no default minimum size. If |with_menu_marker| is true (1) a menu marker
-// will be added to the button.
+/// Create a new MenuButton. A |delegate| must be provided to call show_menu()
+/// when the button is clicked. |text| will be shown on the MenuButton and used
+/// as the default accessible name. If |with_frame| is true (1) the button will
+/// have a visible frame at all times, center alignment, additional padding and
+/// a default minimum size of 70x33 DIP. If |with_frame| is false (0) the button
+/// will only have a visible frame on hover/press, left alignment, less padding
+/// and no default minimum size.
 ///
 CEF_EXPORT cef_menu_button_t* cef_menu_button_create(
     struct _cef_menu_button_delegate_t* delegate,
-    const cef_string_t* text,
-    int with_frame,
-    int with_menu_marker);
+    const cef_string_t* text);
 
 #ifdef __cplusplus
 }

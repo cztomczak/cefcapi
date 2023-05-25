@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=639d58245ecd39624d39ee8b49e0e4e056d1c4ed$
+// $hash=4b9c31ef9a23f899c6d8cd3da49934a41f1bd231$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_AUTH_CALLBACK_CAPI_H_
@@ -47,24 +47,24 @@ extern "C" {
 #endif
 
 ///
-// Callback structure used for asynchronous continuation of authentication
-// requests.
+/// Callback structure used for asynchronous continuation of authentication
+/// requests.
 ///
 typedef struct _cef_auth_callback_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Continue the authentication request.
+  /// Continue the authentication request.
   ///
   void(CEF_CALLBACK* cont)(struct _cef_auth_callback_t* self,
                            const cef_string_t* username,
                            const cef_string_t* password);
 
   ///
-  // Cancel the authentication request.
+  /// Cancel the authentication request.
   ///
   void(CEF_CALLBACK* cancel)(struct _cef_auth_callback_t* self);
 } cef_auth_callback_t;

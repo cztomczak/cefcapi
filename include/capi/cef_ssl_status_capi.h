@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=2aa604a0520a802ae3b10f5922d4a7ca48078785$
+// $hash=034a68aa4901cde95e12a7900cfc65753fbde345$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_SSL_STATUS_CAPI_H_
@@ -49,40 +49,40 @@ extern "C" {
 #endif
 
 ///
-// Structure representing the SSL information for a navigation entry.
+/// Structure representing the SSL information for a navigation entry.
 ///
 typedef struct _cef_sslstatus_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Returns true (1) if the status is related to a secure SSL/TLS connection.
+  /// Returns true (1) if the status is related to a secure SSL/TLS connection.
   ///
   int(CEF_CALLBACK* is_secure_connection)(struct _cef_sslstatus_t* self);
 
   ///
-  // Returns a bitmask containing any and all problems verifying the server
-  // certificate.
+  /// Returns a bitmask containing any and all problems verifying the server
+  /// certificate.
   ///
   cef_cert_status_t(CEF_CALLBACK* get_cert_status)(
       struct _cef_sslstatus_t* self);
 
   ///
-  // Returns the SSL version used for the SSL connection.
+  /// Returns the SSL version used for the SSL connection.
   ///
   cef_ssl_version_t(CEF_CALLBACK* get_sslversion)(
       struct _cef_sslstatus_t* self);
 
   ///
-  // Returns a bitmask containing the page security content status.
+  /// Returns a bitmask containing the page security content status.
   ///
   cef_ssl_content_status_t(CEF_CALLBACK* get_content_status)(
       struct _cef_sslstatus_t* self);
 
   ///
-  // Returns the X.509 certificate.
+  /// Returns the X.509 certificate.
   ///
   struct _cef_x509certificate_t*(CEF_CALLBACK* get_x509certificate)(
       struct _cef_sslstatus_t* self);

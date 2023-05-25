@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2023 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 // by hand. See the translator.README.txt file in the tools directory for
 // more information.
 //
-// $hash=3f0ed89d2320677780c2fd526be7fe6312580cd8$
+// $hash=7fbcd399c08dc39e33a7d0400a49f2e3a551bd02$
 //
 
 #ifndef CEF_INCLUDE_CAPI_CEF_RESPONSE_CAPI_H_
@@ -47,92 +47,128 @@ extern "C" {
 #endif
 
 ///
-// Structure used to represent a web response. The functions of this structure
-// may be called on any thread.
+/// Structure used to represent a web response. The functions of this structure
+/// may be called on any thread.
 ///
 typedef struct _cef_response_t {
   ///
-  // Base structure.
+  /// Base structure.
   ///
   cef_base_ref_counted_t base;
 
   ///
-  // Returns true (1) if this object is read-only.
+  /// Returns true (1) if this object is read-only.
   ///
   int(CEF_CALLBACK* is_read_only)(struct _cef_response_t* self);
 
   ///
-  // Get the response error code. Returns ERR_NONE if there was no error.
+  /// Get the response error code. Returns ERR_NONE if there was no error.
   ///
   cef_errorcode_t(CEF_CALLBACK* get_error)(struct _cef_response_t* self);
 
   ///
-  // Set the response error code. This can be used by custom scheme handlers to
-  // return errors during initial request processing.
+  /// Set the response error code. This can be used by custom scheme handlers to
+  /// return errors during initial request processing.
   ///
   void(CEF_CALLBACK* set_error)(struct _cef_response_t* self,
                                 cef_errorcode_t error);
 
   ///
-  // Get the response status code.
+  /// Get the response status code.
   ///
   int(CEF_CALLBACK* get_status)(struct _cef_response_t* self);
 
   ///
-  // Set the response status code.
+  /// Set the response status code.
   ///
   void(CEF_CALLBACK* set_status)(struct _cef_response_t* self, int status);
 
   ///
-  // Get the response status text.
+  /// Get the response status text.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
   cef_string_userfree_t(CEF_CALLBACK* get_status_text)(
       struct _cef_response_t* self);
 
   ///
-  // Set the response status text.
+  /// Set the response status text.
   ///
   void(CEF_CALLBACK* set_status_text)(struct _cef_response_t* self,
                                       const cef_string_t* statusText);
 
   ///
-  // Get the response mime type.
+  /// Get the response mime type.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
   cef_string_userfree_t(CEF_CALLBACK* get_mime_type)(
       struct _cef_response_t* self);
 
   ///
-  // Set the response mime type.
+  /// Set the response mime type.
   ///
   void(CEF_CALLBACK* set_mime_type)(struct _cef_response_t* self,
                                     const cef_string_t* mimeType);
 
   ///
-  // Get the value for the specified response header field.
+  /// Get the response charset.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t(CEF_CALLBACK* get_header)(struct _cef_response_t* self,
-                                                  const cef_string_t* name);
+  cef_string_userfree_t(CEF_CALLBACK* get_charset)(
+      struct _cef_response_t* self);
 
   ///
-  // Get all response header fields.
+  /// Set the response charset.
+  ///
+  void(CEF_CALLBACK* set_charset)(struct _cef_response_t* self,
+                                  const cef_string_t* charset);
+
+  ///
+  /// Get the value for the specified response header field.
+  ///
+  // The resulting string must be freed by calling cef_string_userfree_free().
+  cef_string_userfree_t(CEF_CALLBACK* get_header_by_name)(
+      struct _cef_response_t* self,
+      const cef_string_t* name);
+
+  ///
+  /// Set the header |name| to |value|. If |overwrite| is true (1) any existing
+  /// values will be replaced with the new value. If |overwrite| is false (0)
+  /// any existing values will not be overwritten.
+  ///
+  void(CEF_CALLBACK* set_header_by_name)(struct _cef_response_t* self,
+                                         const cef_string_t* name,
+                                         const cef_string_t* value,
+                                         int overwrite);
+
+  ///
+  /// Get all response header fields.
   ///
   void(CEF_CALLBACK* get_header_map)(struct _cef_response_t* self,
                                      cef_string_multimap_t headerMap);
 
   ///
-  // Set all response header fields.
+  /// Set all response header fields.
   ///
   void(CEF_CALLBACK* set_header_map)(struct _cef_response_t* self,
                                      cef_string_multimap_t headerMap);
+
+  ///
+  /// Get the resolved URL after redirects or changed as a result of HSTS.
+  ///
+  // The resulting string must be freed by calling cef_string_userfree_free().
+  cef_string_userfree_t(CEF_CALLBACK* get_url)(struct _cef_response_t* self);
+
+  ///
+  /// Set the resolved URL after redirects or changed as a result of HSTS.
+  ///
+  void(CEF_CALLBACK* set_url)(struct _cef_response_t* self,
+                              const cef_string_t* url);
 } cef_response_t;
 
 ///
-// Create a new cef_response_t object.
+/// Create a new cef_response_t object.
 ///
-CEF_EXPORT cef_response_t* cef_response_create();
+CEF_EXPORT cef_response_t* cef_response_create(void);
 
 #ifdef __cplusplus
 }
