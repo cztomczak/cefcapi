@@ -57,6 +57,19 @@ int main(int argc, char** argv) {
         .instance = GetModuleHandle(NULL)
     };
 
+    // Handshake with the CEF library so we know there's no version mismatch
+    char const *api_hash = cef_api_hash(CEF_API_VERSION, 0);
+    if(0 != strcmp(api_hash, CEF_API_HASH_PLATFORM)){
+        fprintf(stderr,
+            "The version of the provided libcef.dll doesn't match the version this "
+            "application was built against\n"
+            "Our API hash: %s\n"
+            "Library's API hash: %s\n",
+            CEF_API_HASH_PLATFORM,
+            api_hash);
+        _exit(1);
+    }
+
     // Cef app
     struct my_cef_app app = {0};
     initialize_cef_app(&app);
@@ -88,6 +101,7 @@ int main(int argc, char** argv) {
     }else{
         // Window info
         cef_window_info_t window_info = {
+            .size = sizeof window_info,
             .style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN
                    | WS_CLIPSIBLINGS     | WS_VISIBLE,
             .bounds = {
