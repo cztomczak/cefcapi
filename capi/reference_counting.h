@@ -16,13 +16,14 @@
 //    one compilation unit.
 
 // OPTIONAL MACROS:
-//  - BASE_NAME: the name of the member of `T` with type
+//  - BASE_NAME: the name of the member of `T` whose size we should assign
+//    to the BASE_RC_NAME member's .size field (defaults to `base`)
+//  - BASE_RC_NAME: the name of the member of `T` with type
 //    `cef_base_ref_counted_t` (defaults to `base.base`)
 //  - RC_NAME: the name of the member of `T` with type
 //    `struct reference_counter` (defaults to `rc`)
 //  - ON_DESTROY(self): will be called just before the memory for the struct
 //    is freed
-
 
 #ifndef REFERENCE_COUNTING_H
 #define REFERENCE_COUNTING_H
@@ -42,7 +43,11 @@
 
     #ifdef REFERENCE_COUNTING_IMPLEMENTATION
         #ifndef BASE_NAME
-        #define BASE_NAME base.base
+        #define BASE_NAME base
+        #endif
+
+        #ifndef BASE_RC_NAME
+        #define BASE_RC_NAME BASE_NAME.base
         #endif
 
         #ifndef RC_NAME
@@ -55,13 +60,13 @@
 
         static void CEF_CALLBACK ID(add_ref)(cef_base_ref_counted_t *self_in){
             if(DEBUG_REFERENCE_COUNTING) printf("%p +\n", (void *)self_in);
-            struct reference_counter *rc = &container_of(self_in, T, BASE_NAME)->RC_NAME;
+            struct reference_counter *rc = &container_of(self_in, T, BASE_RC_NAME)->RC_NAME;
             platform_atomic_increment(&rc->count);
         }
 
         static int CEF_CALLBACK ID(release)(cef_base_ref_counted_t *self_in){
             if(DEBUG_REFERENCE_COUNTING) printf("%p -\n", (void *)self_in);
-            T *self = container_of(self_in, T, BASE_NAME);
+            T *self = container_of(self_in, T, BASE_RC_NAME);
             long new_value = platform_atomic_decrement(&self->RC_NAME.count);
             if(new_value == 0){
                 ON_DESTROY(self);
@@ -71,12 +76,12 @@
         }
 
         static int CEF_CALLBACK ID(has_one_ref)(cef_base_ref_counted_t *self_in){
-            struct reference_counter *rc = &container_of(self_in, T, BASE_NAME)->RC_NAME;
+            struct reference_counter *rc = &container_of(self_in, T, BASE_RC_NAME)->RC_NAME;
             return platform_atomic_load(&rc->count) == 1;
         }
 
         static int CEF_CALLBACK ID(has_at_least_one_ref)(cef_base_ref_counted_t *self_in){
-            struct reference_counter *rc = &container_of(self_in, T, BASE_NAME)->RC_NAME;
+            struct reference_counter *rc = &container_of(self_in, T, BASE_RC_NAME)->RC_NAME;
             return platform_atomic_load(&rc->count) >= 1;
         }
 
@@ -84,8 +89,8 @@
             T *self = malloc(sizeof *self);
             if(self){
                 *self = (T){
-                    .BASE_NAME = {
-                        .size = sizeof *self,
+                    .BASE_RC_NAME = {
+                        .size = sizeof self->BASE_NAME,
                         .add_ref = &ID(add_ref),
                         .release = &ID(release),
                         .has_one_ref = &ID(has_one_ref),
@@ -98,6 +103,7 @@
             }
             return self;
         }
+        #undef BASE_RC_NAME
         #undef BASE_NAME
         #undef RC_NAME
         #undef ON_DESTROY

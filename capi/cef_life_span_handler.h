@@ -40,8 +40,7 @@ void CEF_CALLBACK on_before_close(struct _cef_life_span_handler_t* self,
 
 void initialize_cef_life_span_handler(cef_life_span_handler_t* handler) {
     DEBUG_CALLBACK;
-    handler->base.size = sizeof *handler;
-    initialize_fake_reference_counting(&handler->base);
+    initialize_fake_reference_counting(handler);
     // callbacks - there are many, but implementing only one
     handler->on_before_close = on_before_close;
 }

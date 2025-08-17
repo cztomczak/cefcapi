@@ -59,11 +59,8 @@ int CEF_CALLBACK on_already_running_app_relaunch(
 
 void initialize_cef_app(struct my_cef_app* app) {
     printf("initialize_cef_app\n");
-    app->base.base.size = sizeof *app;
-    initialize_fake_reference_counting(&app->base.base);
-
-    app->process_handler.base.size = sizeof app->process_handler;
-    initialize_fake_reference_counting(&app->process_handler.base);
+    initialize_fake_reference_counting(&app->base);
+    initialize_fake_reference_counting(&app->process_handler);
 
     // callbacks
 

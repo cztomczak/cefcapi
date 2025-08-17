@@ -39,8 +39,7 @@ struct _cef_load_handler_t *CEF_CALLBACK get_load_handler(struct _cef_client_t *
 
 void initialize_cef_client(struct my_client *client) {
     DEBUG_CALLBACK;
-    client->base.base.size = sizeof *client;
-    initialize_fake_reference_counting(&client->base.base);
+    initialize_fake_reference_counting(&client->base);
 
     initialize_cef_life_span_handler(&client->life_span_handler);
 

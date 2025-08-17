@@ -41,10 +41,9 @@ int CEF_CALLBACK fake_release(cef_base_ref_counted_t* self) { return 1; }
 int CEF_CALLBACK fake_has_one_ref(cef_base_ref_counted_t* self) { return 1; }
 int CEF_CALLBACK fake_has_at_least_one_ref(cef_base_ref_counted_t *self) { return 1; }
 
-void initialize_fake_reference_counting(cef_base_ref_counted_t* base) {
+static void initialize_fake_reference_counting_impl(cef_base_ref_counted_t* base, size_t size) {
     printf("initialize_cef_base_ref_counted\n");
-    // Check if "size" member was set.
-    size_t size = base->size;
+    base->size = size;
     // Let's print the size in case sizeof was used
     // on a pointer instead of a structure. In such
     // case the number will be very high.
@@ -58,3 +57,6 @@ void initialize_fake_reference_counting(cef_base_ref_counted_t* base) {
     base->has_one_ref = fake_has_one_ref;
     base->has_at_least_one_ref = fake_has_at_least_one_ref;
 }
+
+#define initialize_fake_reference_counting(x) \
+    initialize_fake_reference_counting_impl(&(x)->base, sizeof *(x))
