@@ -28,11 +28,11 @@ Table of contents:
 
 Tested configurations:
 - Windows:
-    - Binary: `cef_binary_129.0.6+ga918aa7+chromium-129.0.6668.29_windows64_beta.tar.bz2`
-    - Compilers: mingw-w64 gcc 11.2.0 and Visual Studio 2022 on Windows 10 64-bit
+    - Binary: `cef_binary_139.0.23+g34a5b51+chromium-139.0.7258.128_windows64.tar.bz2`
+    - Compilers: mingw-w64 gcc 12.4.0 and Visual Studio 2022 on Windows 11 64-bit
 - Linux:
-    - Binary: `cef_binary_129.0.6+ga918aa7+chromium-129.0.6668.29_linux64_beta.tar.bz2`
-    - Compiler: Linux: gcc 9.4.0 on Ubuntu 20.04 64-bit
+    - Binary: `cef_binary_139.0.23+g34a5b51+chromium-139.0.7258.128_linux64.tar.bz2`
+    - Compiler: Linux: gcc 11.4.0 on Ubuntu 22.04 64-bit
 
 ## Getting started
 
