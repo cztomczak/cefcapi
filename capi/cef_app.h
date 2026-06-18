@@ -26,6 +26,7 @@ struct my_cef_app {
 /// function is called on multiple threads in the browser process.
 ///
 struct _cef_browser_process_handler_t *CEF_CALLBACK get_browser_process_handler(struct _cef_app_t* self_in){
+    // add_ref not needed here because our process_handler isn't reference counted
     return &container_of(self_in, struct my_cef_app, base)->process_handler;
 }
 

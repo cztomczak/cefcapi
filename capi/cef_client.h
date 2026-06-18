@@ -28,7 +28,7 @@ struct my_client {
 struct _cef_life_span_handler_t* CEF_CALLBACK get_life_span_handler(
         struct _cef_client_t* self) {
     DEBUG_CALLBACK;
-    // Implemented!
+    // add_ref not needed here because our life_span_handler isn't reference counted
     return &container_of(self, struct my_client, base)->life_span_handler;
 }
 
