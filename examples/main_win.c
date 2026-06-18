@@ -149,6 +149,6 @@ int main(int argc, char** argv) {
         printf("cef_shutdown\n");
         cef_shutdown();
     }
-    printf("Didn't crash!\n");
+    printf("Main process didn't crash!\n");
     return ret;
 }
