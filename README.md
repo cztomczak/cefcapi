@@ -41,9 +41,10 @@ Tested configurations:
    in the Compatibility section above:
    https://cef-builds.spotifycdn.com/index.html
 2. Put the cef*.tar.bz file into third_party
-3. On Linux run "make run" (example uses GTK+ 3)
-4. On Windows run "build_msvc.bat" or "build_gcc.bat" to build with MSVC or MinGW, respectively
+3. On Linux run `make` (example uses GTK+ 3)
+4. On Windows run `build_msvc.bat` or `build_gcc.bat` to build with MSVC or MinGW, respectively
     - 7zip will need to be installed, or you will need to extract cef manually
+5. The built application will appear in the `Release` directory at repo top level
 
 ## Support development
 
