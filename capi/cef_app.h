@@ -5,10 +5,16 @@
 
 #include "cef_base.h"
 #include "include/capi/cef_app_capi.h"
+#include "include/capi/cef_browser_process_handler_capi.h"
 
 // ----------------------------------------------------------------------------
 // cef_app_t
 // ----------------------------------------------------------------------------
+
+struct my_cef_app {
+    cef_app_t base;
+    cef_browser_process_handler_t process_handler;
+};
 
 ///
 // Implement this structure to provide handler implementations. Methods will be
@@ -16,74 +22,49 @@
 ///
 
 ///
-// Provides an opportunity to view and/or modify command-line arguments before
-// processing by CEF and Chromium. The |process_type| value will be NULL for
-// the browser process. Do not keep a reference to the cef_command_line_t
-// object passed to this function. The CefSettings.command_line_args_disabled
-// value can be used to start with an NULL command-line object. Any values
-// specified in CefSettings that equate to command-line arguments will be set
-// before this function is called. Be cautious when using this function to
-// modify command-line arguments for non-browser processes as this may result
-// in undefined behavior including crashes.
+/// Return the handler for functionality specific to the browser process. This
+/// function is called on multiple threads in the browser process.
 ///
-void CEF_CALLBACK on_before_command_line_processing(
-        struct _cef_app_t* self, const cef_string_t* process_type,
-        struct _cef_command_line_t* command_line) {
-    DEBUG_CALLBACK("on_before_command_line_processing\n");
+struct _cef_browser_process_handler_t *CEF_CALLBACK get_browser_process_handler(struct _cef_app_t* self_in){
+    // add_ref not needed here because our process_handler isn't reference counted
+    return &container_of(self_in, struct my_cef_app, base)->process_handler;
 }
 
 ///
-// Provides an opportunity to register custom schemes. Do not keep a reference
-// to the |registrar| object. This function is called on the main thread for
-// each process and the registered schemes should be the same across all
-// processes.
+/// Implement this function to provide app-specific behavior when an already
+/// running app is relaunched with the same CefSettings.root_cache_path value.
+/// For example, activate an existing app window or create a new app window.
+/// |command_line| will be read-only. Do not keep a reference to
+/// |command_line| outside of this function. Return true (1) if the relaunch
+/// is handled or false (0) for default relaunch behavior. Default behavior
+/// will create a new default styled Chrome window.
 ///
-void CEF_CALLBACK on_register_custom_schemes(
-        struct _cef_app_t* self,
-        struct _cef_scheme_registrar_t* registrar) {
-    DEBUG_CALLBACK("on_register_custom_schemes\n");
+/// To avoid cache corruption only a single app instance is allowed to run for
+/// a given CefSettings.root_cache_path value. On relaunch the app checks a
+/// process singleton lock and then forwards the new launch arguments to the
+/// already running app process before exiting early. Client apps should
+/// therefore check the cef_initialize() return value for early exit before
+/// proceeding.
+///
+/// This function will be called on the browser process UI thread.
+///
+int CEF_CALLBACK on_already_running_app_relaunch(
+    struct _cef_browser_process_handler_t* self,
+    struct _cef_command_line_t* command_line,
+    const cef_string_t* current_directory
+){
+    printf("TODO: implement on_already_running_app_relaunch\n");
+    command_line->base.release(&command_line->base);
+    return 1;
 }
 
-///
-// Return the handler for resource bundle events. If
-// CefSettings.pack_loading_disabled is true (1) a handler must be returned.
-// If no handler is returned resources will be loaded from pack files. This
-// function is called by the browser and render processes on multiple threads.
-///
-struct _cef_resource_bundle_handler_t*
-        CEF_CALLBACK get_resource_bundle_handler(struct _cef_app_t* self) {
-    DEBUG_CALLBACK("get_resource_bundle_handler\n");
-    return NULL;
-}
-
-///
-// Return the handler for functionality specific to the browser process. This
-// function is called on multiple threads in the browser process.
-///
-struct _cef_browser_process_handler_t* 
-        CEF_CALLBACK get_browser_process_handler(struct _cef_app_t* self) {
-    DEBUG_CALLBACK("get_browser_process_handler\n");
-    return NULL;
-}
-
-///
-// Return the handler for functionality specific to the render process. This
-// function is called on the render process main thread.
-///
-struct _cef_render_process_handler_t*
-        CEF_CALLBACK get_render_process_handler(struct _cef_app_t* self) {
-    DEBUG_CALLBACK("get_render_process_handler\n");
-    return NULL;
-}
-
-void initialize_cef_app(cef_app_t* app) {
+void initialize_cef_app(struct my_cef_app* app) {
     printf("initialize_cef_app\n");
-    app->base.size = sizeof(cef_app_t);
-    initialize_cef_base_ref_counted((cef_base_ref_counted_t*)app);
+    initialize_fake_reference_counting(&app->base);
+    initialize_fake_reference_counting(&app->process_handler);
+
     // callbacks
-    app->on_before_command_line_processing = on_before_command_line_processing;
-    app->on_register_custom_schemes = on_register_custom_schemes;
-    app->get_resource_bundle_handler = get_resource_bundle_handler;
-    app->get_browser_process_handler = get_browser_process_handler;
-    app->get_render_process_handler = get_render_process_handler;
+
+    app->base.get_browser_process_handler = &get_browser_process_handler;
+    app->process_handler.on_already_running_app_relaunch = &on_already_running_app_relaunch;
 }

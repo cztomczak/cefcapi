@@ -1,15 +1,28 @@
-info:
-	@echo "Use 'make gtk2' for GTK+ 2 example, or 'make gtk3' for GTK+ 3 example."
-gtk2:
-	@echo "----------------------------------------------------------------------"
-	@rm -f Release/cefcapi-gtk2
-	@clear
-	gcc -std=c99 -Wall -Werror -o Release/cefcapi-gtk2 -I. -I.. -Wl,-rpath,. -L./Release examples/main_linux.c -lX11 -lcef `pkg-config --libs --cflags gtk+-2.0`
-	cd Release/ && ./cefcapi-gtk2 && cd ../
-gtk3:
-	@echo "----------------------------------------------------------------------"
-	@rm -f Release/cefcapi-gtk3
-	@clear
-	gcc -std=c99 -Wall -Werror -o Release/cefcapi-gtk3 -I. -I.. -Wl,-rpath,. -L./Release examples/main_linux.c -lX11 -lcef `pkg-config --libs --cflags gtk+-3.0`
-	cd Release/ && ./cefcapi-gtk3 && cd ../
+CFILES = examples/main_linux.c
+HFILES = capi/*.h examples/gtk.h
 
+CC = gcc
+WARNINGS = -Wall -Wextra -Wpedantic -Wconversion -Wno-unused-parameter
+SYSTEM_DEPS = `pkg-config --cflags gtk+-3.0 | sed "s>-I/>-isystem/>g"`
+DBG_FLAGS = -g
+CFLAGS = $(DBG_FLAGS) $(WARNINGS) $(SYSTEM_DEPS) -isystem ./cef_extracted -I.
+LFLAGS = -L$(OUT) -Wl,-rpath=\$$ORIGIN `pkg-config --libs gtk+-3.0` -lX11 -lcef
+OUT = ./Release
+EXE = $(OUT)/cef_example
+SELF = Makefile
+
+all: $(EXE) $(SELF)
+
+run: all
+	$(EXE)
+
+clean:
+	rm -rf ./cef_extracted ./Release
+
+$(SELF): extract_deps.mk
+	touch $(SELF)
+
+$(EXE): $(OUT)/libcef.so $(HFILES) $(CFILES) $(SELF)
+	$(CC) $(CFLAGS) -o $(EXE) $(CFILES) $(LFLAGS)
+
+include extract_deps.mk

@@ -29,18 +29,18 @@
 ///
 void CEF_CALLBACK on_before_close(struct _cef_life_span_handler_t* self,
                                   struct _cef_browser_t* browser) {
-    DEBUG_CALLBACK("on_before_close\n");
+    DEBUG_CALLBACK;
     // TODO: Check how many browsers do exist and quit message
     //       loop only when last browser is closed. Otherwise
     //       closing a popup window will exit app while main
     //       window shouldn't be closed.
     cef_quit_message_loop();
+    browser->base.release(&browser->base);
 }
 
 void initialize_cef_life_span_handler(cef_life_span_handler_t* handler) {
-    DEBUG_CALLBACK("initialize_cef_life_span_handler\n");
-    handler->base.size = sizeof(cef_life_span_handler_t);
-    initialize_cef_base_ref_counted((cef_base_ref_counted_t*)handler);
+    DEBUG_CALLBACK;
+    initialize_fake_reference_counting(handler);
     // callbacks - there are many, but implementing only one
     handler->on_before_close = on_before_close;
 }

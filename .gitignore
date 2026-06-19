@@ -1,2 +1,8 @@
-Release/*
 .idea/
+*.swp
+/cef_extracted
+/Release
+*.obj
+*.pdb
+*.res
+*.coff

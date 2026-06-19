@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <unistd.h>
 #include "include/capi/cef_base_capi.h"
+#include "reference_counting.h"
 
 // Set to 1 to check if add_ref() and release()
 // are called and to track the total number of calls.
@@ -13,58 +13,37 @@
 
 // Print only the first execution of the callback,
 // ignore the subsequent.
-#define DEBUG_CALLBACK(x) { \
+#define DEBUG_CALLBACK do { \
     static int first_call = 1; \
     if (first_call == 1) { \
         first_call = 0; \
-        printf(x); \
+        printf("%s\n", __func__); \
     } \
-}
+} while(0)
+
+// For a struct within a struct, get a pointer to the "containing"
+// struct given a pointer to the "contained" struct.
+#define container_of(ptr, type, member) \
+    ((type *)((char *)(1?ptr:&((type *)0)->member) - offsetof(type, member)))
 
 // ----------------------------------------------------------------------------
 // cef_base_ref_counted_t
 // ----------------------------------------------------------------------------
 
-///
-// Structure defining the reference count implementation functions.
-// All framework structures must include the cef_base_ref_counted_t
-// structure first.
-///
+// A "fake" implementation of reference counting for structures which have
+// simpler lifetimes.  Most CEF client handlers can use this since they can
+// simply outlive the call to cef_shutdown, after which they are guaranteed to no
+// longer be referenced by CEF.  For user-defined structs which truly need reference
+// counting, see `reference_counting.h`.
 
-///
-// Increment the reference count.
-///
-void CEF_CALLBACK add_ref(cef_base_ref_counted_t* self) {
-    DEBUG_CALLBACK("cef_base_ref_counted_t.add_ref\n");
-    if (DEBUG_REFERENCE_COUNTING)
-        printf("+");
-}
+void CEF_CALLBACK fake_add_ref(cef_base_ref_counted_t* self) { }
+int CEF_CALLBACK fake_release(cef_base_ref_counted_t* self) { return 1; }
+int CEF_CALLBACK fake_has_one_ref(cef_base_ref_counted_t* self) { return 1; }
+int CEF_CALLBACK fake_has_at_least_one_ref(cef_base_ref_counted_t *self) { return 1; }
 
-///
-// Decrement the reference count.  Delete this object when no references
-// remain.
-///
-int CEF_CALLBACK release(cef_base_ref_counted_t* self) {
-    DEBUG_CALLBACK("cef_base_ref_counted_t.release\n");
-    if (DEBUG_REFERENCE_COUNTING)
-        printf("-");
-    return 1;
-}
-
-///
-// Returns the current number of references.
-///
-int CEF_CALLBACK has_one_ref(cef_base_ref_counted_t* self) {
-    DEBUG_CALLBACK("cef_base_ref_counted_t.has_one_ref\n");
-    if (DEBUG_REFERENCE_COUNTING)
-        printf("=");
-    return 1;
-}
-
-void initialize_cef_base_ref_counted(cef_base_ref_counted_t* base) {
+static void initialize_fake_reference_counting_impl(cef_base_ref_counted_t* base, size_t size) {
     printf("initialize_cef_base_ref_counted\n");
-    // Check if "size" member was set.
-    size_t size = base->size;
+    base->size = size;
     // Let's print the size in case sizeof was used
     // on a pointer instead of a structure. In such
     // case the number will be very high.
@@ -73,7 +52,11 @@ void initialize_cef_base_ref_counted(cef_base_ref_counted_t* base) {
         printf("FATAL: initialize_cef_base failed, size member not set\n");
         _exit(1);
     }
-    base->add_ref = add_ref;
-    base->release = release;
-    base->has_one_ref = has_one_ref;
+    base->add_ref = fake_add_ref;
+    base->release = fake_release;
+    base->has_one_ref = fake_has_one_ref;
+    base->has_at_least_one_ref = fake_has_at_least_one_ref;
 }
+
+#define initialize_fake_reference_counting(x) \
+    initialize_fake_reference_counting_impl(&(x)->base, sizeof *(x))
