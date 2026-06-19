@@ -28,7 +28,7 @@ Table of contents:
 
 Tested configurations:
 - Windows:
-    - Binary: `cef_binary_139.0.23+g34a5b51+chromium-139.0.7258.128_windows64.tar.bz2`
+    - Binary: `cef_binary_148.0.10+g7ee53f5+chromium-148.0.7778.218_windows64.tar.bz2`
     - Compilers: mingw-w64 gcc 12.4.0 and Visual Studio 2022 on Windows 11 64-bit
 - Linux:
     - Binary: `cef_binary_145.0.25+g265860d+chromium-145.0.7632.76_linux64.tar.bz2`
