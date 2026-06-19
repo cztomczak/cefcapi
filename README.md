@@ -1,13 +1,14 @@
 # CEF C API (cefcapi)
 
-A simple example on how to use the C API in [Chromium Embedded
-Framework](https://bitbucket.org/chromiumembedded/cef) created by
+A simple example of how to use the C API in the [Chromium Embedded
+Framework (CEF)](https://github.com/chromiumembedded/cef), originally created by
 [Czarek Tomczak](https://www.linkedin.com/in/czarektomczak/).
-Example creates a window, embeds a browser inside that window
-and loads Google website. Shows how to implement dummy reference
-counting and CEF structures with callbacks to implement CEF handlers
-like `cef_app_t`, `cef_client_t` and `cef_life_span_handler_t`.
-To understand and implement real reference counting see the
+The example creates a window, embeds a browser and loads the Google website.
+It shows how to implement CEF structures with callbacks for handlers such as
+`cef_app_t`, `cef_client_t` and `cef_life_span_handler_t`. The example primarily
+uses dummy reference counting for simplicity, but `cef_load_handler.h`
+and `reference_counting.h` also demonstrate how real reference counting
+can be implemented. To better understand real reference counting see the
 [Using The CAPI](https://chromiumembedded.github.io/cef/using_the_capi)
 wiki page in the upstream CEF project.
 
@@ -16,7 +17,6 @@ Table of contents:
 * [Compatibility](#compatibility)
 * [Getting started](#getting-started)
 * [Support development](#support-development)
-* [Updating CEF version](#updating-cef-version)
 
 ## Examples
 
@@ -32,7 +32,7 @@ Tested configurations:
     - Compilers: mingw-w64 gcc 12.4.0 and Visual Studio 2022 on Windows 11 64-bit
 - Linux:
     - Binary: `cef_binary_145.0.25+g265860d+chromium-145.0.7632.76_linux64.tar.bz2`
-    - Compiler: Linux: gcc 11.4.0 on Ubuntu 22.04 64-bit
+    - Compiler: gcc 11.4.0 on Ubuntu 22.04 64-bit
 
 ## Getting started
 
@@ -40,7 +40,7 @@ Tested configurations:
    Automated Builds for the supported CEF version mentioned
    in the Compatibility section above:
    https://cef-builds.spotifycdn.com/index.html
-2. Put the cef*.tar.bz file into third_party
+2. Put the downloaded `cef_binary_*.tar.bz2` file into the `third_party/` directory
 3. On Linux run `make` (example uses GTK+ 3)
 4. On Windows run `build_msvc.bat` or `build_gcc.bat` to build with MSVC or MinGW, respectively
     - 7zip will need to be installed, or you will need to extract cef manually
